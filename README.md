@@ -1,6 +1,6 @@
 # Snail shell
 
-A core lisp lexer for gastropods.
+A structurally aware lexer for gastropods.
 
 ## Why?
 
