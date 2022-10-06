@@ -1,0 +1,74 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.7.
+--
+-- see: https://github.com/sol/hpack
+
+name:           snail-shell
+version:        0.1.0.0
+description:    A s-expression parser for a general lisp interpreter
+homepage:       https://github.com/chiroptical/snail-shell#readme
+bug-reports:    https://github.com/chiroptical/snail-shell/issues
+author:         Barry Moore
+maintainer:     chiroptical@proton.me
+copyright:      Barry Moore
+license:        MIT
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/chiroptical/snail-shell
+
+library
+  exposed-modules:
+      Snail.Shell.Characters
+      Snail.Shell.IO
+      Snail.Shell.Lexer
+  other-modules:
+      Paths_snail_shell
+  hs-source-dirs:
+      src
+  default-extensions:
+      ImportQualifiedPost
+      LambdaCase
+      OverloadedStrings
+  build-depends:
+      QuickCheck
+    , base >=4.7 && <5
+    , containers
+    , megaparsec
+    , mtl
+    , text
+    , text-display
+  default-language: Haskell2010
+
+test-suite snail-shell-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Gen
+      Snail.IOSpec
+      Snail.LexerSpec
+      Paths_snail_shell
+  hs-source-dirs:
+      test
+  default-extensions:
+      ImportQualifiedPost
+      LambdaCase
+      OverloadedStrings
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      QuickCheck
+    , base >=4.7 && <5
+    , containers
+    , hspec
+    , hspec-discover
+    , megaparsec
+    , mtl
+    , raw-strings-qq
+    , snail-shell
+    , text
+    , text-display
+  default-language: Haskell2010

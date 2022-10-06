@@ -1,0 +1,51 @@
+name:                snail-shell
+version:             0.1.0.0
+github:              "chiroptical/snail-shell"
+license:             MIT
+author:              "Barry Moore"
+maintainer:          "chiroptical@proton.me"
+copyright:           "Barry Moore"
+
+extra-source-files:
+- README.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         A s-expression parser for a general lisp interpreter
+
+dependencies:
+- base >= 4.7 && < 5
+- containers
+- megaparsec
+- mtl
+- text
+- text-display
+- QuickCheck
+
+default-extensions:
+- ImportQualifiedPost
+- LambdaCase
+- OverloadedStrings
+
+library:
+  source-dirs: src
+
+tests:
+  snail-shell-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - snail-shell
+    - HUnit
+    - hspec
+    - hspec-discover
+    - raw-strings-qq
