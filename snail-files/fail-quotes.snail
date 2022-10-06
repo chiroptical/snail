@@ -1,2 +1,2 @@
-; Prints "hello world" to the console
+-- Prints "hello world" to the console
 (print "hello "world"")

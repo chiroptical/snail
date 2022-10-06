@@ -82,43 +82,43 @@ spec = do
             "((()) (()))" `sExpressionShouldBe` []
 
         it "successfully lex line comment" $ do
-            "(; ...\n)" `sExpressionShouldBe` []
+            "(-- ...\n)" `sExpressionShouldBe` []
 
         it "successfully lex line comment followed by token" $ do
-            "(; ...\nabc)" `sExpressionShouldBe` ["abc"]
+            "(-- ...\nabc)" `sExpressionShouldBe` ["abc"]
 
         it "successfully lex line comment with \r\n followed by token" $ do
-            "(; ...\r\nabc)" `sExpressionShouldBe` ["abc"]
+            "(-- ...\r\nabc)" `sExpressionShouldBe` ["abc"]
 
         it "successfully lex line comment with \t followed by token" $ do
-            "(; ...\n\tabc)" `sExpressionShouldBe` ["abc"]
+            "(-- ...\n\tabc)" `sExpressionShouldBe` ["abc"]
 
         it "successfully lex line comment with \v followed by token" $ do
-            "(; ...\n\vabc)" `sExpressionShouldBe` ["abc"]
+            "(-- ...\n\vabc)" `sExpressionShouldBe` ["abc"]
 
         it "successfully lex block comment" $ do
-            "(#| ... |#)" `sExpressionShouldBe` []
+            "({- ... -})" `sExpressionShouldBe` []
 
         it "successfully lex block comment followed by token" $ do
-            "(#| ... |#abc)" `sExpressionShouldBe` ["abc"]
+            "({- ... -}abc)" `sExpressionShouldBe` ["abc"]
 
         it "successfully lex token followed by block comments" $ do
-            "(abc#| ... |#)" `sExpressionShouldBe` ["abc"]
+            "(abc{- ... -})" `sExpressionShouldBe` ["abc"]
 
         it "successfully lex block comments sorrounded by tokens" $ do
-            "(abc#| ... |#def)" `sExpressionShouldBe` ["abc", "def"]
+            "(abc{- ... -}def)" `sExpressionShouldBe` ["abc", "def"]
 
         it "successfully lex nested block comments" $ do
-            "(#| ... #| ... |# ... |#)" `sExpressionShouldBe` []
+            "({- ... {- ... -} ... -})" `sExpressionShouldBe` []
 
         it "fail to lex nested block comments with missing internal start" $ do
-            parseMaybe sExpression "(#| ... |# ... |#)" `shouldBe` Nothing
+            parseMaybe sExpression "({- ... -} ... -})" `shouldBe` Nothing
 
         it "fail to lex nested block comments with missing internal stop" $ do
-            parseMaybe sExpression "(#| ... #| ... |#)" `shouldBe` Nothing
+            parseMaybe sExpression "({- ... {- ... -})" `shouldBe` Nothing
 
         it "fail to lex block comment with missing stop" $ do
-            parseMaybe sExpression "(#| ...)" `shouldBe` Nothing
+            parseMaybe sExpression "({- ...)" `shouldBe` Nothing
 
         it "can handle subsequent s-expressions" $ do
             parseMaybe sExpressions "()(nil)()" `shouldSatisfy` isJust

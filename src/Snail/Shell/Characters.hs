@@ -1,6 +1,6 @@
 module Snail.Shell.Characters where
 
--- | ...
+-- | The initial character of any text
 initialCharacter :: String
 initialCharacter = ['a' .. 'z'] <> ['A' .. 'Z']
 

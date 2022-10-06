@@ -1,14 +1,14 @@
-; Prints `hello "world"` to the console
+-- Prints `hello "world"` to the console
 (print "hello \"world\"")
 
-; Prints 3 to the console
+-- Prints 3 to the console
 (print (+ 1 2))
 
-#|
+{-
   Defines a function to add two numbers
   Applies the function to generate 3
   Prints 3 to the console
-|#
+-}
 (let
   (f (lambda (x y) (+ x y)))
   (print (f 2 1)))
@@ -21,4 +21,4 @@
 
 (print false)
 
-; end comment
+-- end comment
