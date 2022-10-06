@@ -11,7 +11,7 @@ essentially ready for awhile. There are a handful of "Write you a Scheme
 Interpreters"-like tutorials and they all use a structural aware parser
 relatively similar to this one. However, there are some pretty subtle issues
 with most of the ones I have seen. For example, the two examples below parse as
-a single lexeme in a lot of examples. Even Haskell's parser has a similar issue
+a single lexeme in a lot of examples. Even Haskell's parser has a [similar issue][haskell-parse-issue]
 to this one!
 
 ```
@@ -73,3 +73,4 @@ main = do
 ```
 
 [tapl]: https://www.cis.upenn.edu/~bcpierce/tapl
+[haskell-parse-issue]: https://twitter.com/chiroptical/status/1471568781906518018
