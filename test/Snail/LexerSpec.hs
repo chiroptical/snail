@@ -5,7 +5,7 @@ module Snail.LexerSpec (spec) where
 
 import Data.Maybe (isJust, isNothing)
 import Data.Text
-import Snail.Shell.Lexer
+import Snail.Shell
 import Test.HUnit (assertBool)
 import Test.Hspec
 import Text.Megaparsec (parseMaybe)

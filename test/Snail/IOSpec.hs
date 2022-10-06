@@ -1,7 +1,7 @@
 module Snail.IOSpec where
 
 import Data.Either
-import Snail.Shell.IO
+import Snail.Shell
 import Test.Hspec
 
 spec :: Spec
