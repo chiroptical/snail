@@ -60,7 +60,8 @@ test-suite snail-shell-test
       OverloadedStrings
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      QuickCheck
+      HUnit
+    , QuickCheck
     , base >=4.7 && <5
     , containers
     , hspec

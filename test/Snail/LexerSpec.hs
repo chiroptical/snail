@@ -23,21 +23,24 @@ foldLexemes = go []
     lgo acc [] = acc
     lgo acc (x : xs) = lgo (go acc x) xs
 
+failAssertion :: String -> Expectation
+failAssertion s = assertBool s False
+
 sExpressionShouldBe :: Text -> [Text] -> Expectation
 sExpressionShouldBe input output =
     case parseMaybe sExpression input of
-        Nothing -> assertBool "..." False
+        Nothing -> failAssertion "sExpressionShouldBe: Nothing"
         Just sExpr -> do
             let lexemes = foldLexemes sExpr
             lexemes `shouldBe` output
 
 textLiteralShouldBe :: Text -> [Text] -> Expectation
-textLiteralShouldBe input output = do
-    let mSExpr = parseMaybe textLiteral input
-    mSExpr `shouldSatisfy` isJust
-    let Just sExpr = mSExpr
-        lexemes = foldLexemes sExpr
-    lexemes `shouldBe` output
+textLiteralShouldBe input output =
+    case parseMaybe textLiteral input of
+        Nothing -> failAssertion "textLiteralShouldBe: Nothing"
+        Just sExpr -> do
+            let lexemes = foldLexemes sExpr
+            lexemes `shouldBe` output
 
 spec :: Spec
 spec = do
