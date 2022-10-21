@@ -30,3 +30,12 @@ spec = do
         it "lex should fail on naked nil" $ do
             eResults <- readSnailFile "snail-files/fail-nil.snail"
             eResults `shouldSatisfy` isLeft
+
+    describe "successfully lexes some examples from other languages" $ do
+        it "lexes a basic scheme file with converted comments" $ do
+            eResults <- readSnailFile "./test/files/r5rs_pitfalls.scm"
+            eResults `shouldSatisfy` isRight
+
+        it "lexes a basic fennel file with converted comments" $ do
+            eResults <- readSnailFile "./test/files/fennel-reference.fnl"
+            eResults `shouldSatisfy` isRight

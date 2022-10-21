@@ -54,7 +54,9 @@ symbol = L.symbol spaces
 parens :: Parser a -> Parser a
 parens = between (symbol "(") (symbol ")")
 
--- | The list of valid token characters, note that we allow invalid tokens at this point
+{- | The list of valid token characters, note that we allow invalid tokens at
+ this point
+-}
 validCharacter :: Parser Char
 validCharacter =
     oneOf

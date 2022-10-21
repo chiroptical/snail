@@ -72,4 +72,9 @@ main = do
     Left failureString -> print failureString
 ```
 
+## TODO
+
+- [ ] See TODO in ./test/files/fennel-reference.fnl, empty string failure
+- [ ] Add some examples from https://learnxinyminutes.com/docs/common-lisp in a test
+
 [tapl]: https://www.cis.upenn.edu/~bcpierce/tapl
