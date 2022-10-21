@@ -1,6 +1,6 @@
 # Snail shell
 
-A core lisp lexer for gastropods.
+A structurally aware lexer for gastropods.
 
 ## Why?
 
@@ -11,8 +11,7 @@ essentially ready for awhile. There are a handful of "Write you a Scheme
 Interpreters"-like tutorials and they all use a structural aware parser
 relatively similar to this one. However, there are some pretty subtle issues
 with most of the ones I have seen. For example, the two examples below parse as
-a single lexeme in a lot of examples. Even Haskell's parser has a similar issue
-to this one!
+two lexemes in a lot of examples. Even Haskell's parser has [this issue][haskell-parse-issue]!
 
 ```
 (1a)
@@ -78,3 +77,4 @@ main = do
 - [ ] Add some examples from https://learnxinyminutes.com/docs/common-lisp in a test
 
 [tapl]: https://www.cis.upenn.edu/~bcpierce/tapl
+[haskell-parse-issue]: https://twitter.com/chiroptical/status/1471568781906518018
