@@ -44,6 +44,11 @@ textLiteralShouldBe input output =
 
 spec :: Spec
 spec = do
+    describe "non quote character" $ do
+        it "handles spaces properly" $ do
+            let mSExpr = parseMaybe nonQuoteCharacter " "
+            mSExpr `shouldBe` Just " "
+
     describe "parse text literals" $ do
         it "successfully parses a basic text literal" $ do
             [r|"hello \"world"|] `textLiteralShouldBe` [[r|hello \"world|]]
@@ -54,6 +59,12 @@ spec = do
         it "fails to lex text literal with unescaped quote" $ do
             let mSExpr = parseMaybe textLiteral [r|"hello "world"|]
             mSExpr `shouldSatisfy` isNothing
+
+        it "can parse the empty string" $ do
+            [r|" "|] `textLiteralShouldBe` [" "]
+
+        it "can parse the empty string" $ do
+            [r|"    "|] `textLiteralShouldBe` ["    "]
 
     describe "parse sExpression" $ do
         it "successfully lex a basic list" $ do
@@ -125,3 +136,6 @@ spec = do
 
         it "fails to parse nested naked nil" $ do
             parseMaybe sExpressions "()nil()" `shouldSatisfy` isNothing
+
+        it "handles successive text literals" $ do
+            [r|("hello" " " "world" "!!!")|] `sExpressionShouldBe` ["hello", " ", "world", "!!!"]

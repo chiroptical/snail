@@ -73,8 +73,7 @@ main = do
 
 ## TODO
 
-- [ ] See TODO in ./test/files/fennel-reference.fnl, empty string failure
-- [ ] Add some examples from https://learnxinyminutes.com/docs/common-lisp in a test
+- [ ] Support characters in front of s-expressions, i.e. `'()`
 
 [tapl]: https://www.cis.upenn.edu/~bcpierce/tapl
 [haskell-parse-issue]: https://twitter.com/chiroptical/status/1471568781906518018

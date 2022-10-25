@@ -14,6 +14,7 @@ module Snail.Shell.Lexer (
     sExpressions,
 
     -- * Exported for testing
+    nonQuoteCharacter,
     textLiteral,
 ) where
 
@@ -110,11 +111,11 @@ lexeme = do
 
 -- | Match a parser within quotes
 quotes :: Parser a -> Parser a
-quotes = between (symbol "\"") (symbol "\"")
+quotes = between (char '\"') (char '\"')
 
 -- | An escaped quote to support nesting `"` inside a 'textLiteral'
 escapedQuote :: Parser Text
-escapedQuote = symbol "\\\""
+escapedQuote = string "\\\""
 
 -- | Matches any non-quote character
 nonQuoteCharacter :: Parser Text

@@ -39,3 +39,7 @@ spec = do
         it "lexes a basic fennel file with converted comments" $ do
             eResults <- readSnailFile "./test/files/fennel-reference.fnl"
             eResults `shouldSatisfy` isRight
+
+        it "lexes a basic common lisp file with converted comments" $ do
+            eResults <- readSnailFile "./test/files/learnxyz.cl"
+            eResults `shouldSatisfy` isRight
