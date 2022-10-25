@@ -92,7 +92,7 @@ validCharacter =
 data SExpression
     = Lexeme (SourcePos, Text)
     | TextLiteral (SourcePos, Text)
-    | SExpression [SExpression]
+    | SExpression (Maybe Char) [SExpression]
     deriving (Eq, Show)
 
 {- | Any 'Text' object that starts with an appropriately valid character. This
@@ -143,7 +143,10 @@ leaves = lexeme <|> textLiteral <|> sExpression
 
 -- | Parse an 'SExpression'
 sExpression :: Parser SExpression
-sExpression = SExpression <$> parens (leaves `sepEndBy` spaces)
+sExpression =
+    SExpression
+        <$> optional (oneOf parenthesisStartingCharacter)
+        <*> parens (leaves `sepEndBy` spaces)
 
 -- | Parse a valid snail file
 sExpressions :: Parser [SExpression]

@@ -17,8 +17,8 @@ foldLexemes = go []
     go :: [Text] -> SExpression -> [Text]
     go acc (Lexeme (_, t)) = acc ++ [t]
     go acc (TextLiteral (_, t)) = acc ++ [t]
-    go acc (SExpression []) = acc
-    go acc (SExpression (x : xs)) = lgo (go acc x) xs
+    go acc (SExpression _ []) = acc
+    go acc (SExpression _ (x : xs)) = lgo (go acc x) xs
     lgo :: [Text] -> [SExpression] -> [Text]
     lgo acc [] = acc
     lgo acc (x : xs) = lgo (go acc x) xs
@@ -79,6 +79,9 @@ spec = do
 
         it "successfully lex a basic list" $ do
             "(1 a)" `sExpressionShouldBe` ["1", "a"]
+
+        it "successfully lex a basic list with starting character" $ do
+            "'(1 a)" `sExpressionShouldBe` ["1", "a"]
 
         it "successfully lex a single element list" $ do
             "(1a)" `sExpressionShouldBe` ["1a"]

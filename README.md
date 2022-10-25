@@ -71,9 +71,5 @@ main = do
     Left failureString -> print failureString
 ```
 
-## TODO
-
-- [ ] Support characters in front of s-expressions, i.e. `'()`
-
 [tapl]: https://www.cis.upenn.edu/~bcpierce/tapl
 [haskell-parse-issue]: https://twitter.com/chiroptical/status/1471568781906518018

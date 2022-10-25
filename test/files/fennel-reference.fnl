@@ -4,7 +4,7 @@
 (local functions ())
 
 (fn functions.p (x y z)
-  (print (* x (+ y z))))
+  (print '(* x (+ y z))))
 
 (lambda (x ?y z)
   (print (- x (* (or ?y 1) z))))
@@ -52,7 +52,7 @@
 (match mytable
   59      :will-never-match-hopefully
   (9 q 5) (print :q q)
-  (1 a b) (+ a b))
+  (1 a b) @(+ a b))
 
 (match mytable
   (:subtable (a b ?c) :depth depth( (* b depth)
@@ -73,7 +73,7 @@
   (where (a b c) (= 0 (math.fmod (+ a b c) 2)) (= 91 a)) c) -- -> 53
 
 (match (5 1 2)
-  (where (or (a 3 9) (a 1 2)) (= 5 a)) "Either (5 3 9) or (5 1 2)"
+  (where `(or (a 3 9) (a 1 2)) (= 5 a)) "Either (5 3 9) or (5 1 2)"
   _ "anything else")
 
 (match (5 1 2)
@@ -99,7 +99,7 @@
   (match-try (conn:receive :*l)
     input (parse input)
     (command-name params) (commands.get command-name)
-    command (pcall command (table.unpack params))
+    command ,(pcall command (table.unpack params))
     (catch
      (_ :timeout) nil
      (_ :closed) (pcall disconnect conn "connection closed")
