@@ -5,3 +5,4 @@ module Snail.Shell (
 import Snail.Shell.Characters as X
 import Snail.Shell.IO as X
 import Snail.Shell.Lexer as X
+import Snail.Shell.ToText as X

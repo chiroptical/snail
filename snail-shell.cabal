@@ -27,6 +27,7 @@ library
       Snail.Shell.Characters
       Snail.Shell.IO
       Snail.Shell.Lexer
+      Snail.Shell.ToText
   other-modules:
       Paths_snail_shell
   hs-source-dirs:
@@ -52,6 +53,7 @@ test-suite snail-shell-test
       Gen
       Snail.IOSpec
       Snail.LexerSpec
+      Snail.ToTextSpec
       Paths_snail_shell
   hs-source-dirs:
       test

@@ -18,10 +18,13 @@ format-check:
 ghcid: hpack
 	ghcid -c "cabal repl --ghc-options='${OPTIONS}'"
 
+ghcid-test: hpack
+	ghcid -c "cabal repl snail-shell-test --ghc-options='${OPTIONS}'"
+
 clean:
 	cabal clean
 
 hlint:
 	hlint .
 
-.PHONY: build hpack test format format-check ghcid clean hlint
+.PHONY: build hpack test format format-check ghcid ghcid-test clean hlint
