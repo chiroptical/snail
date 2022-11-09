@@ -27,6 +27,14 @@ spec = do
             eResults <- readSnailFile "snail-files/fail-quotes.snail"
             eResults `shouldSatisfy` isLeft
 
+        it "lex should fail with non-escaped quote 2" $ do
+            eResults <- readSnailFile "snail-files/fail-quotes-2.snail"
+            eResults `shouldSatisfy` isLeft
+
+        it "lex should fail with non-escaped quote 3" $ do
+            eResults <- readSnailFile "snail-files/fail-quotes-3.snail"
+            eResults `shouldSatisfy` isLeft
+
         it "lex should fail on naked nil" $ do
             eResults <- readSnailFile "snail-files/fail-nil.snail"
             eResults `shouldSatisfy` isLeft

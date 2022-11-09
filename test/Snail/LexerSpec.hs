@@ -60,9 +60,12 @@ spec = do
             mSExpr `shouldSatisfy` isNothing
 
         it "can parse the empty string" $ do
+            [r|""|] `textLiteralShouldBe` [""]
+
+        it "can parse whitespace" $ do
             [r|" "|] `textLiteralShouldBe` [" "]
 
-        it "can parse the empty string" $ do
+        it "can parse more whitespace" $ do
             [r|"    "|] `textLiteralShouldBe` ["    "]
 
     describe "parse sExpression" $ do

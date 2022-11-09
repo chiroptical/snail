@@ -109,10 +109,6 @@ lexeme = do
     lexeme' <- some validCharacter
     pure $ Lexeme (sourcePosition, Text.pack lexeme')
 
--- | Match a parser within quotes
-quotes :: Parser a -> Parser a
-quotes = between (char '\"') (char '\"')
-
 -- | An escaped quote to support nesting `"` inside a 'textLiteral'
 escapedQuote :: Parser Text
 escapedQuote = string "\\\""
@@ -123,6 +119,12 @@ nonQuoteCharacter = do
     character <- anySingleBut '\"'
     pure $ Text.singleton character
 
+quote :: Parser Char
+quote = char '\"'
+
+quotes :: Parser a -> Parser a
+quotes = between quote quote
+
 {- | Matches a literal text and supports nested quotes, e.g.
 
  @
@@ -132,8 +134,11 @@ nonQuoteCharacter = do
 textLiteral :: Parser SExpression
 textLiteral = do
     sourcePosition <- getSourcePos
-    text <- quotes (some $ escapedQuote <|> nonQuoteCharacter)
-    pure $ TextLiteral (sourcePosition, Text.concat text)
+    mText <- quotes . optional $ some $ escapedQuote <|> nonQuoteCharacter
+    notFollowedBy (validCharacter <|> char '\"')
+    pure $ case mText of
+        Nothing -> TextLiteral (sourcePosition, "")
+        Just text -> TextLiteral (sourcePosition, Text.concat text)
 
 {- | Parse one of the possible structures in 'SExpression'. These are parsed
  recursively separated by 'spaces' in 'sExpression'.
