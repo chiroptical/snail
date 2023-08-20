@@ -7,12 +7,12 @@
   };
 
   outputs = {
-    self,
+    # self,
     nixpkgs,
     flake-utils,
     ...
   }:
-    flake-utils.lib.eachSystem ["x86_64-linux"] (system: let
+    flake-utils.lib.eachSystem ["x86_64-linux" "aarch64-darwin"] (system: let
       pkgs = import nixpkgs {
         inherit system;
         config.allowBroken = true;
