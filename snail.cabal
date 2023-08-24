@@ -1,35 +1,36 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.7.
+-- This file has been generated from package.yaml by hpack version 0.35.2.
 --
 -- see: https://github.com/sol/hpack
 
-name:           snail-shell
+name:           snail
 version:        0.1.0.0
-description:    A s-expression parser for a general lisp interpreter
-homepage:       https://github.com/chiroptical/snail-shell#readme
-bug-reports:    https://github.com/chiroptical/snail-shell/issues
+description:    A programming language for gastropods
+homepage:       https://github.com/chiroptical/snail#readme
+bug-reports:    https://github.com/chiroptical/snail/issues
 author:         Barry Moore
 maintainer:     chiroptical@proton.me
 copyright:      Barry Moore
 license:        MIT
+license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
 
 source-repository head
   type: git
-  location: https://github.com/chiroptical/snail-shell
+  location: https://github.com/chiroptical/snail
 
 library
   exposed-modules:
-      Snail.Shell
-      Snail.Shell.Characters
-      Snail.Shell.IO
-      Snail.Shell.Lexer
-      Snail.Shell.ToText
+      Snail
+      Snail.Characters
+      Snail.IO
+      Snail.Lexer
+      Snail.ToText
   other-modules:
-      Paths_snail_shell
+      Paths_snail
   hs-source-dirs:
       src
   default-extensions:
@@ -46,7 +47,7 @@ library
     , text-display
   default-language: Haskell2010
 
-test-suite snail-shell-test
+test-suite snail-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
@@ -54,7 +55,7 @@ test-suite snail-shell-test
       Snail.IOSpec
       Snail.LexerSpec
       Snail.ToTextSpec
-      Paths_snail_shell
+      Paths_snail
   hs-source-dirs:
       test
   default-extensions:
@@ -72,7 +73,7 @@ test-suite snail-shell-test
     , megaparsec
     , mtl
     , raw-strings-qq
-    , snail-shell
+    , snail
     , text
     , text-display
   default-language: Haskell2010

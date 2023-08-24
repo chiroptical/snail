@@ -1,9 +1,9 @@
-module Snail.Shell.ToText (toText) where
+module Snail.ToText (toText) where
 
 import Data.Text
-import Snail.Shell.Lexer
+import Snail.Lexer
 
-toText :: SExpression -> Text
+toText :: SnailAst -> Text
 toText = \case
     TextLiteral (_, txt) -> "\"" <> txt <> "\""
     Lexeme (_, lexeme) -> lexeme

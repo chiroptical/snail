@@ -1,5 +1,5 @@
 {
-  description = "snail-shell";
+  description = "A programming language for gastropods";
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
@@ -17,14 +17,14 @@
         inherit system;
         config.allowBroken = true;
       };
-      snail-shell = pkgs.callPackage ./snail-shell.nix {};
+      snail = pkgs.callPackage ./snail.nix {};
     in {
       devShell = import ./shell.nix {
         inherit pkgs;
       };
-      defaultPackage = snail-shell;
+      defaultPackage = snail;
       packages = flake-utils.lib.flattenTree {
-       inherit snail-shell;
+       inherit snail;
       };
     });
 }

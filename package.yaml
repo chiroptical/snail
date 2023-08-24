@@ -1,6 +1,6 @@
-name:                snail-shell
+name:                snail
 version:             0.1.0.0
-github:              "chiroptical/snail-shell"
+github:              "chiroptical/snail"
 license:             MIT
 author:              "Barry Moore"
 maintainer:          "chiroptical@proton.me"
@@ -16,16 +16,16 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         A s-expression parser for a general lisp interpreter
+description:         A programming language for gastropods
 
 dependencies:
 - base >= 4.7 && < 5
 - containers
 - megaparsec
 - mtl
+- QuickCheck
 - text
 - text-display
-- QuickCheck
 
 default-extensions:
 - ImportQualifiedPost
@@ -36,7 +36,7 @@ library:
   source-dirs: src
 
 tests:
-  snail-shell-test:
+  snail-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -44,8 +44,8 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - snail-shell
-    - HUnit
     - hspec
     - hspec-discover
+    - HUnit
     - raw-strings-qq
+    - snail

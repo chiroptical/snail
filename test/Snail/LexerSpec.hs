@@ -4,21 +4,21 @@ module Snail.LexerSpec (spec) where
 
 import Data.Maybe (isJust, isNothing)
 import Data.Text
-import Snail.Shell
+import Snail
 import Test.HUnit (assertBool)
 import Test.Hspec
 import Text.Megaparsec (parseMaybe)
 import Text.RawString.QQ
 
-foldLexemes :: SExpression -> [Text]
+foldLexemes :: SnailAst -> [Text]
 foldLexemes = go []
   where
-    go :: [Text] -> SExpression -> [Text]
+    go :: [Text] -> SnailAst -> [Text]
     go acc (Lexeme (_, t)) = acc ++ [t]
     go acc (TextLiteral (_, t)) = acc ++ [t]
     go acc (SExpression _ []) = acc
     go acc (SExpression _ (x : xs)) = lgo (go acc x) xs
-    lgo :: [Text] -> [SExpression] -> [Text]
+    lgo :: [Text] -> [SnailAst] -> [Text]
     lgo acc [] = acc
     lgo acc (x : xs) = lgo (go acc x) xs
 
@@ -137,10 +137,10 @@ spec = do
             parseMaybe sExpression "({- ...)" `shouldBe` Nothing
 
         it "can handle subsequent s-expressions" $ do
-            parseMaybe sExpressions "()(nil)()" `shouldSatisfy` isJust
+            parseMaybe snailAst "()(nil)()" `shouldSatisfy` isJust
 
         it "fails to parse nested naked nil" $ do
-            parseMaybe sExpressions "()nil()" `shouldSatisfy` isNothing
+            parseMaybe snailAst "()nil()" `shouldSatisfy` isNothing
 
         it "handles successive text literals" $ do
             [r|("hello" " " "world" "!!!")|] `sExpressionShouldBe` ["hello", " ", "world", "!!!"]

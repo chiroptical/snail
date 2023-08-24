@@ -19,7 +19,7 @@ ghcid: hpack
 	ghcid -c "cabal repl --ghc-options='${OPTIONS}'"
 
 ghcid-test: hpack
-	ghcid -c "cabal repl snail-shell-test --ghc-options='${OPTIONS}'"
+	ghcid -c "cabal repl snail-test --ghc-options='${OPTIONS}'"
 
 clean:
 	cabal clean

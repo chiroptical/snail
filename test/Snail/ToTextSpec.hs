@@ -2,7 +2,7 @@
 
 module Snail.ToTextSpec (spec) where
 
-import Snail.Shell
+import Snail
 import Test.Hspec
 import Text.Megaparsec
 import Text.RawString.QQ

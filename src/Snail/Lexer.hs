@@ -7,11 +7,11 @@
   Here, we implement a structurally aware lexer that supports one token type
   (text literals) for convenience.
 -}
-module Snail.Shell.Lexer (
+module Snail.Lexer (
     -- * The parsers you should use
-    SExpression (..),
+    SnailAst (..),
     sExpression,
-    sExpressions,
+    snailAst,
 
     -- * Exported for testing
     nonQuoteCharacter,
@@ -21,7 +21,7 @@ module Snail.Shell.Lexer (
 import Data.Text (Text)
 import Data.Text qualified as Text
 import Data.Void
-import Snail.Shell.Characters
+import Snail.Characters
 import Text.Megaparsec hiding (token)
 import Text.Megaparsec.Char
 import Text.Megaparsec.Char.Lexer qualified as L
@@ -89,10 +89,10 @@ validCharacter =
 
     The 'Data.Tree.Tree' type in containers is non-empty which isn't exactly what we are looking for
 -}
-data SExpression
+data SnailAst
     = Lexeme (SourcePos, Text)
     | TextLiteral (SourcePos, Text)
-    | SExpression (Maybe Char) [SExpression]
+    | SExpression (Maybe Char) [SnailAst]
     deriving (Eq, Show)
 
 {- | Any 'Text' object that starts with an appropriately valid character. This
@@ -103,7 +103,7 @@ data SExpression
  (hello)
  @
 -}
-lexeme :: Parser SExpression
+lexeme :: Parser SnailAst
 lexeme = do
     sourcePosition <- getSourcePos
     lexeme' <- some validCharacter
@@ -131,7 +131,7 @@ quotes = between quote quote
  ("hello\"")
  @
 -}
-textLiteral :: Parser SExpression
+textLiteral :: Parser SnailAst
 textLiteral = do
     sourcePosition <- getSourcePos
     mText <- quotes . optional $ some $ escapedQuote <|> nonQuoteCharacter
@@ -140,19 +140,19 @@ textLiteral = do
         Nothing -> TextLiteral (sourcePosition, "")
         Just text -> TextLiteral (sourcePosition, Text.concat text)
 
-{- | Parse one of the possible structures in 'SExpression'. These are parsed
+{- | Parse one of the possible structures in 'SnailAst'. These are parsed
  recursively separated by 'spaces' in 'sExpression'.
 -}
-leaves :: Parser SExpression
+leaves :: Parser SnailAst
 leaves = lexeme <|> textLiteral <|> sExpression
 
 -- | Parse an 'SExpression'
-sExpression :: Parser SExpression
+sExpression :: Parser SnailAst
 sExpression =
     SExpression
         <$> optional (oneOf parenthesisStartingCharacter)
         <*> parens (leaves `sepEndBy` spaces)
 
 -- | Parse a valid snail file
-sExpressions :: Parser [SExpression]
-sExpressions = (spaces *> sExpression `sepEndBy1` spaces) <* eof
+snailAst :: Parser [SnailAst]
+snailAst = (spaces *> sExpression `sepEndBy1` spaces) <* eof

@@ -1,4 +1,4 @@
-module Snail.Shell.Characters where
+module Snail.Characters where
 
 -- | The initial character of any text
 initialCharacter :: String
