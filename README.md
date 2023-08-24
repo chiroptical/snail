@@ -1,4 +1,4 @@
-# Snail shell
+# Snail
 
 A programming language for gastropods.
 
@@ -18,12 +18,12 @@ examples. Even Haskell's parser has [this issue][haskell-parse-issue]!
 (1 a)
 ```
 
-## Snail shell "language"
+## Snail "language"
 
-In snail shell, we only parse valid lexemes, text literals, and s-expressions.
-The valid lexemes are approximately from R5RS Scheme but this may change in the
+In snail, we only parse valid lexemes, text literals, and s-expressions. The
+valid lexemes are approximately from R5RS Scheme but this may change in the
 future. We also use Haskell's line and block comments. Here is a valid snail
-shell program,
+program,
 
 ```
 -- Prints `hello "world"` to the console
@@ -54,7 +54,7 @@ shell program,
 
 It is important to note, this program doesn't do anything. Snail is a
 programming language that simply takes the parsing out of the equation so you
-can interpret or compile your own!
+can interpret or compile your own language!
 
 ## Getting the AST
 
