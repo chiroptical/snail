@@ -1,6 +1,6 @@
 # Snail shell
 
-A structurally aware lexer for gastropods.
+A programming language for gastropods.
 
 ## Why?
 
@@ -8,10 +8,10 @@ My colleagues and I are going to start working through [Types and Progamming
 Languages][tapl]. In the book you implement languages of varying feature sets.
 The book implements these languages in OCaml, however I had this Lisp parser
 essentially ready for awhile. There are a handful of "Write you a Scheme
-Interpreters"-like tutorials and they all use a structural aware parser
-relatively similar to this one. However, there are some pretty subtle issues
-with most of the ones I have seen. For example, the two examples below parse as
-two lexemes in a lot of examples. Even Haskell's parser has [this issue][haskell-parse-issue]!
+Interpreters"-like tutorials and they all use a parser relatively similar to
+this one. However, there are some pretty subtle issues with most of the ones I
+have seen. For example, the two examples below parse as two lexemes in a lot of
+examples. Even Haskell's parser has [this issue][haskell-parse-issue]!
 
 ```
 (1a)
@@ -23,7 +23,7 @@ two lexemes in a lot of examples. Even Haskell's parser has [this issue][haskell
 In snail shell, we only parse valid lexemes, text literals, and s-expressions.
 The valid lexemes are approximately from R5RS Scheme but this may change in the
 future. We also use Haskell's line and block comments. Here is a valid snail
-shell input,
+shell program,
 
 ```
 -- Prints `hello "world"` to the console
@@ -52,10 +52,14 @@ shell input,
 -- end comment
 ```
 
+It is important to note, this program doesn't do anything. Snail is a
+programming language that simply takes the parsing out of the equation so you
+can interpret or compile your own!
+
 ## Getting the AST
 
-You can see some examples in 'test/Snail/IOSpec.hs', but you can put your snail
-shell into some file, let's say 'hello.snail'. The following Haskell will print
+You can see some examples in `test/Snail/IOSpec.hs`, but you can put your snail
+program into some file, let's say `hello.snail`. The following Haskell will print
 the AST or print a failure,
 
 ```haskell
