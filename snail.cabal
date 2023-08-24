@@ -10,8 +10,8 @@ description:    A programming language for gastropods
 homepage:       https://github.com/chiroptical/snail#readme
 bug-reports:    https://github.com/chiroptical/snail/issues
 author:         Barry Moore
-maintainer:     chiroptical@proton.me
-copyright:      Barry Moore
+maintainer:     chiroptical@gmail.com
+copyright:      Barry Moore II
 license:        MIT
 license-file:   LICENSE
 build-type:     Simple

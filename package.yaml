@@ -3,8 +3,8 @@ version:             0.1.0.0
 github:              "chiroptical/snail"
 license:             MIT
 author:              "Barry Moore"
-maintainer:          "chiroptical@proton.me"
-copyright:           "Barry Moore"
+maintainer:          "chiroptical@gmail.com"
+copyright:           "Barry Moore II"
 
 extra-source-files:
 - README.md
