@@ -1,6 +1,6 @@
 # Snail
 
-A programming language for gastropods.
+A no-semantics programming language for gastropods.
 
 ## Why?
 
@@ -18,12 +18,22 @@ examples. Even Haskell's parser has [this issue][haskell-parse-issue]!
 (1 a)
 ```
 
-## Snail "language"
+## Is this really a programming language?
 
-In snail, we only parse valid lexemes, text literals, and s-expressions. The
-valid lexemes are approximately from R5RS Scheme but this may change in the
-future. We also use Haskell's line and block comments. Here is a valid snail
-program,
+From the ["Programming language" wikipedia page][pl-wikipedia],
+
+> A programming language is a system of notation for writing computer programs.
+
+> The description of a programming language is usually split into the two components of syntax (form) and semantics (meaning)
+
+Snail is used for writing interpreters or compilers. However, it doesn't define
+**any** semantics. So, maybe?
+
+## Syntax (form)
+
+Snail describes valid lexemes, text literals, and s-expressions. The valid
+lexemes are approximately from R5RS Scheme but this may change in the future.
+We also use Haskell's line and block comments. Here is a valid snail program,
 
 ```
 -- Prints `hello "world"` to the console
@@ -52,9 +62,9 @@ program,
 -- end comment
 ```
 
-It is important to note, this program doesn't do anything. Snail is a
-programming language that simply takes the parsing out of the equation so you
-can interpret or compile your own language!
+Reminder, this program has no semantics. It is your job to take Snail's
+Abstract Syntax Tree (AST) and define the semantics of an interpreter or
+compiler.
 
 ## Getting the AST
 
@@ -77,3 +87,4 @@ main = do
 
 [tapl]: https://www.cis.upenn.edu/~bcpierce/tapl
 [haskell-parse-issue]: https://twitter.com/chiroptical/status/1471568781906518018
+[pl-wikipedia]: https://en.wikipedia.org/wiki/Programming_language
