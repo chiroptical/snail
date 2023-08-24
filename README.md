@@ -75,7 +75,7 @@ the AST or print a failure,
 ```haskell
 module Main where
 
-import Snail.Shell
+import Snail
 
 main :: IO ()
 main = do
