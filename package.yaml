@@ -5,18 +5,19 @@ license:             MIT
 author:              "Barry Moore"
 maintainer:          "chiroptical@gmail.com"
 copyright:           "Barry Moore II"
+synopsis:            A programming language with no semantics
+category:            Parsing
+description:
+  An s-expression parser and abstract syntax tree for a programming language
+  with no semantics. If you wanted to write an interpreter or compiler you
+  convert the AST into your own.
 
 extra-source-files:
 - README.md
 
-# Metadata used when publishing your package
-# synopsis:            Short description of your package
-# category:            Web
-
-# To avoid duplicated efforts in documentation and dealing with the
-# complications of embedding Haddock markup inside cabal files, it is
-# common to point users to the README.md file.
-description:         A programming language for gastropods
+data-files:
+- snail-files/*.snail
+- test/files/*
 
 dependencies:
 - base >= 4.15 && < 5

@@ -6,7 +6,9 @@ cabal-version: 1.12
 
 name:           snail
 version:        0.1.0.0
-description:    A programming language for gastropods
+synopsis:       A programming language with no semantics
+description:    An s-expression parser and abstract syntax tree for a programming language with no semantics. If you wanted to write an interpreter or compiler you convert the AST into your own.
+category:       Parsing
 homepage:       https://github.com/chiroptical/snail#readme
 bug-reports:    https://github.com/chiroptical/snail/issues
 author:         Barry Moore
@@ -17,6 +19,19 @@ license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
+data-files:
+    snail-files/basic.snail
+    snail-files/fail-comment.snail
+    snail-files/fail-empty.snail
+    snail-files/fail-nil.snail
+    snail-files/fail-quotes-2.snail
+    snail-files/fail-quotes-3.snail
+    snail-files/fail-quotes.snail
+    snail-files/fail.snail
+    snail-files/nil.snail
+    test/files/fennel-reference.fnl
+    test/files/learnxyz.cl
+    test/files/r5rs_pitfalls.scm
 
 source-repository head
   type: git
