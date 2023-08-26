@@ -2,7 +2,7 @@ name:                snail
 version:             0.1.0.0
 github:              "chiroptical/snail"
 license:             MIT
-author:              "Barry Moore"
+author:              "Barry Moore II"
 maintainer:          "chiroptical@gmail.com"
 copyright:           "Barry Moore II"
 synopsis:            A programming language with no semantics
@@ -45,8 +45,8 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - hspec
-    - hspec-discover
-    - HUnit
-    - raw-strings-qq
     - snail
+    - HUnit >= 1.6.2 && < 1.7
+    - hspec >= 2.10.10 && < 2.11
+    - hspec-discover >= 2.10.10 && < 2.11
+    - raw-strings-qq >= 1.1 && < 1.2

@@ -29,7 +29,12 @@ hlint:
 	hlint .
 
 # This will add version bounds to dependencies
-bounds:
+bounds: hpack
 	cabal gen-bounds
 
-.PHONY: build hpack test format format-check ghcid ghcid-test clean hlint bounds
+# Mostly documentation for future uploads
+hackage: hpack
+	cabal new-haddock --haddock-for-hackage snail
+	cabal upload --publish -d dist-newstyle/snail-0.1.0.0-docs.tar.gz
+
+.PHONY: build hpack test format format-check ghcid ghcid-test clean hlint bounds hackage
