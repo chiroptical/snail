@@ -19,7 +19,7 @@ extra-source-files:
 description:         A programming language for gastropods
 
 dependencies:
-- base >= 4.11.1 && < 5
+- base >= 4.15 && < 5
 - containers >= 0.6.7 && < 0.7
 - megaparsec >= 9.3.1 && < 9.4
 - mtl >= 2.2.2 && < 2.3
