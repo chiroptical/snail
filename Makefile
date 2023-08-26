@@ -27,4 +27,8 @@ clean:
 hlint:
 	hlint .
 
-.PHONY: build hpack test format format-check ghcid ghcid-test clean hlint
+# This will add version bounds to dependencies
+bounds:
+	cabal gen-bounds
+
+.PHONY: build hpack test format format-check ghcid ghcid-test clean hlint bounds

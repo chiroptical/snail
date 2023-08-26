@@ -38,13 +38,13 @@ library
       LambdaCase
       OverloadedStrings
   build-depends:
-      QuickCheck
-    , base >=4.7 && <5
-    , containers
-    , megaparsec
-    , mtl
-    , text
-    , text-display
+      QuickCheck >=2.14.3 && <2.15
+    , base >=4.11.1 && <5
+    , containers >=0.6.7 && <0.7
+    , megaparsec >=9.3.1 && <9.4
+    , mtl >=2.2.2 && <2.3
+    , text >=2.0.2 && <2.1
+    , text-display >=0.0.5 && <0.1
   default-language: Haskell2010
 
 test-suite snail-test
@@ -65,15 +65,15 @@ test-suite snail-test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       HUnit
-    , QuickCheck
-    , base >=4.7 && <5
-    , containers
+    , QuickCheck >=2.14.3 && <2.15
+    , base >=4.11.1 && <5
+    , containers >=0.6.7 && <0.7
     , hspec
     , hspec-discover
-    , megaparsec
-    , mtl
+    , megaparsec >=9.3.1 && <9.4
+    , mtl >=2.2.2 && <2.3
     , raw-strings-qq
     , snail
-    , text
-    , text-display
+    , text >=2.0.2 && <2.1
+    , text-display >=0.0.5 && <0.1
   default-language: Haskell2010

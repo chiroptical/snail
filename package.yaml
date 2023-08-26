@@ -19,13 +19,13 @@ extra-source-files:
 description:         A programming language for gastropods
 
 dependencies:
-- base >= 4.7 && < 5
-- containers
-- megaparsec
-- mtl
-- QuickCheck
-- text
-- text-display
+- base >= 4.11.1 && < 5
+- containers >= 0.6.7 && < 0.7
+- megaparsec >= 9.3.1 && < 9.4
+- mtl >= 2.2.2 && < 2.3
+- QuickCheck >= 2.14.3 && < 2.15
+- text >= 2.0.2 && < 2.1
+- text-display >= 0.0.5 && < 0.1
 
 default-extensions:
 - ImportQualifiedPost
