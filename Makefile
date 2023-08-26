@@ -35,6 +35,8 @@ bounds: hpack
 # Mostly documentation for future uploads
 hackage: hpack
 	cabal new-haddock --haddock-for-hackage snail
-	cabal upload --publish -d dist-newstyle/snail-0.1.0.0-docs.tar.gz
+	cabal new-sdist
+	# cabal upload --publish dist-newstyle/sdist/snail-0.1.0.0.tar.gz
+	# cabal upload --publish -d dist-newstyle/snail-0.1.0.0-docs.tar.gz
 
 .PHONY: build hpack test format format-check ghcid ghcid-test clean hlint bounds hackage
