@@ -3,13 +3,19 @@ module Snail.ToText (toText) where
 import Data.Text
 import Snail.Lexer
 
+bracket :: Text -> Bracket -> Text
+bracket txt = \case
+    Round -> "(" <> txt <> ")"
+    Square -> "[" <> txt <> "]"
+    Curly -> "{" <> txt <> "}"
+
 toText :: SnailAst -> Text
 toText = \case
     TextLiteral (_, txt) -> "\"" <> txt <> "\""
     Lexeme (_, lexeme) -> lexeme
-    SExpression Nothing exprs ->
+    SExpression Nothing bracketKind exprs ->
         let txt = Data.Text.unwords $ toText <$> exprs
-         in "(" <> txt <> ")"
-    SExpression (Just c) exprs ->
+         in bracket txt bracketKind
+    SExpression (Just c) bracketKind exprs ->
         let txt = Data.Text.unwords $ toText <$> exprs
-         in singleton c <> "(" <> txt <> ")"
+         in singleton c <> bracket txt bracketKind

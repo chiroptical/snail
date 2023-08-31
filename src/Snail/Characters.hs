@@ -1,25 +1,17 @@
-module Snail.Characters where
+module Snail.Characters (validCharacter, parenthesisStartingCharacter) where
 
--- | The initial character of any text
-initialCharacter :: String
-initialCharacter = ['a' .. 'z'] <> ['A' .. 'Z']
+-- | The valid character set of Snail
+validCharacter :: String
+validCharacter = ['a' .. 'z'] <> ['A' .. 'Z'] <> digitCharacter <> specialInitialCharacter
 
--- | ...
-specialInitialCharacter :: String
-specialInitialCharacter = "!$%&*/:<=>?^_~#,'"
-
--- | ...
-peculiarCharacter :: String
-peculiarCharacter = "+-."
-
--- | ...
+-- | Characters allowed in numbers
 digitCharacter :: String
 digitCharacter = ['0' .. '9']
 
--- | ...
-specialSubsequentCharacter :: String
-specialSubsequentCharacter = "+-.@\\"
+-- | Special initial characters
+specialInitialCharacter :: String
+specialInitialCharacter = "!$%&*/:=?^_~#,'+-.@\\<>"
 
--- | ...
+-- | Characters allowed in front of an s-expression
 parenthesisStartingCharacter :: String
 parenthesisStartingCharacter = "'`@#,"

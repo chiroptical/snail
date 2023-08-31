@@ -7,7 +7,7 @@ import Data.Text
 import Snail
 import Test.HUnit (assertBool)
 import Test.Hspec
-import Text.Megaparsec (parseMaybe)
+import Text.Megaparsec (parseMaybe, parseTest)
 import Text.RawString.QQ
 
 foldLexemes :: SnailAst -> [Text]
@@ -16,8 +16,8 @@ foldLexemes = go []
     go :: [Text] -> SnailAst -> [Text]
     go acc (Lexeme (_, t)) = acc ++ [t]
     go acc (TextLiteral (_, t)) = acc ++ [t]
-    go acc (SExpression _ []) = acc
-    go acc (SExpression _ (x : xs)) = lgo (go acc x) xs
+    go acc (SExpression _ _ []) = acc
+    go acc (SExpression _ _ (x : xs)) = lgo (go acc x) xs
     lgo :: [Text] -> [SnailAst] -> [Text]
     lgo acc [] = acc
     lgo acc (x : xs) = lgo (go acc x) xs
@@ -28,7 +28,7 @@ failAssertion s = assertBool s False
 sExpressionShouldBe :: Text -> [Text] -> Expectation
 sExpressionShouldBe input output =
     case parseMaybe sExpression input of
-        Nothing -> failAssertion "sExpressionShouldBe: Nothing"
+        Nothing -> failAssertion $ "sExpressionShouldBe: " <> unpack input
         Just sExpr -> do
             let lexemes = foldLexemes sExpr
             lexemes `shouldBe` output
@@ -79,10 +79,11 @@ spec = do
             let mSExpr = parseMaybe sExpression "nil"
             mSExpr `shouldSatisfy` isNothing
 
-        it "successfully lex a basic list" $ do
+        it "successfully lex a basic list with number" $ do
+            parseTest sExpression "(1 a)"
             "(1 a)" `sExpressionShouldBe` ["1", "a"]
 
-        it "successfully lex a basic list with starting character" $ do
+        it "successfully lex a basic list with number and starting character" $ do
             "'(1 a)" `sExpressionShouldBe` ["1", "a"]
 
         it "successfully lex a single element list" $ do
@@ -91,11 +92,23 @@ spec = do
         it "successfully lex a nested s-expression" $ do
             "((1a))" `sExpressionShouldBe` ["1a"]
 
+        it "successfully lex a nested s-expression with different brackets" $ do
+            "([1a])" `sExpressionShouldBe` ["1a"]
+
         it "successfully lex nested s-expressions" $ do
             "(() ())" `sExpressionShouldBe` []
 
+        it "successfully lex nested s-expressions of each bracket" $ do
+            "(() [] {})" `sExpressionShouldBe` []
+
+        it "successfully lex internally nested s-expressions of each bracket" $ do
+            "([{}])" `sExpressionShouldBe` []
+
         it "successfully lex a nested s-expressions" $ do
             "((()) (()))" `sExpressionShouldBe` []
+
+        it "successfully lex a nested s-expressions of different brackets" $ do
+            "({()} [{}])" `sExpressionShouldBe` []
 
         it "successfully lex line comment" $ do
             "(-- ...\n)" `sExpressionShouldBe` []
@@ -144,3 +157,6 @@ spec = do
 
         it "handles successive text literals" $ do
             [r|("hello" " " "world" "!!!")|] `sExpressionShouldBe` ["hello", " ", "world", "!!!"]
+
+        it "fails to parse nested mismatched brackets" $ do
+            parseMaybe snailAst "([)]" `shouldSatisfy` isNothing
