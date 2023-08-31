@@ -16,8 +16,8 @@ foldLexemes = go []
     go :: [Text] -> SnailAst -> [Text]
     go acc (Lexeme (_, t)) = acc ++ [t]
     go acc (TextLiteral (_, t)) = acc ++ [t]
-    go acc (SExpression _ []) = acc
-    go acc (SExpression _ (x : xs)) = lgo (go acc x) xs
+    go acc (SExpression _ _ []) = acc
+    go acc (SExpression _ _ (x : xs)) = lgo (go acc x) xs
     lgo :: [Text] -> [SnailAst] -> [Text]
     lgo acc [] = acc
     lgo acc (x : xs) = lgo (go acc x) xs
@@ -91,11 +91,23 @@ spec = do
         it "successfully lex a nested s-expression" $ do
             "((1a))" `sExpressionShouldBe` ["1a"]
 
+        it "successfully lex a nested s-expression with different brackets" $ do
+            "([1a])" `sExpressionShouldBe` ["1a"]
+
         it "successfully lex nested s-expressions" $ do
             "(() ())" `sExpressionShouldBe` []
 
+        it "successfully lex nested s-expressions of each bracket" $ do
+            "(() [] <> {})" `sExpressionShouldBe` []
+
+        it "successfully lex internally nested s-expressions of each bracket" $ do
+            "([<{}>])" `sExpressionShouldBe` []
+
         it "successfully lex a nested s-expressions" $ do
             "((()) (()))" `sExpressionShouldBe` []
+
+        it "successfully lex a nested s-expressions of different brackets" $ do
+            "(<()> <{}>)" `sExpressionShouldBe` []
 
         it "successfully lex line comment" $ do
             "(-- ...\n)" `sExpressionShouldBe` []
@@ -144,3 +156,6 @@ spec = do
 
         it "handles successive text literals" $ do
             [r|("hello" " " "world" "!!!")|] `sExpressionShouldBe` ["hello", " ", "world", "!!!"]
+
+        it "fails to parse nested mismatched brackets" $ do
+            parseMaybe snailAst "([)]" `shouldSatisfy` isNothing

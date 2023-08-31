@@ -11,14 +11,15 @@ spec :: Spec
 spec = do
     describe "toText" $ do
         it "handles empty s-expression" $
-            toText (SExpression Nothing []) `shouldBe` "()"
+            toText (SExpression Nothing Round []) `shouldBe` "()"
         it "handles basic text literal" $
-            toText (SExpression Nothing [TextLiteral (sourcePos, "hello world")])
+            toText (SExpression Nothing Round [TextLiteral (sourcePos, "hello world")])
                 `shouldBe` [r|("hello world")|]
         it "handles basic lexeme" $
             toText
                 ( SExpression
                     Nothing
+                    Round
                     [ Lexeme (sourcePos, "hello")
                     , Lexeme (sourcePos, "world")
                     ]

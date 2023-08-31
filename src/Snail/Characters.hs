@@ -6,7 +6,7 @@ initialCharacter = ['a' .. 'z'] <> ['A' .. 'Z']
 
 -- | ...
 specialInitialCharacter :: String
-specialInitialCharacter = "!$%&*/:<=>?^_~#,'"
+specialInitialCharacter = "!$%&*/:=?^_~#,'"
 
 -- | ...
 peculiarCharacter :: String
@@ -18,7 +18,7 @@ digitCharacter = ['0' .. '9']
 
 -- | ...
 specialSubsequentCharacter :: String
-specialSubsequentCharacter = "+-.@\\"
+specialSubsequentCharacter = "+-.@\\<>"
 
 -- | ...
 parenthesisStartingCharacter :: String

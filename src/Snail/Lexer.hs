@@ -7,9 +7,12 @@
   Here, we implement a structurally aware lexer that supports one token type
   (text literals) for convenience.
 -}
+{-# LANGUAGE TupleSections #-}
+
 module Snail.Lexer (
     -- * The parsers you should use
     SnailAst (..),
+    Bracket (..),
     sExpression,
     snailAst,
 
@@ -51,9 +54,29 @@ spaces = L.space space1 skipLineComment skipBlockComment
 symbol :: Text -> Parser Text
 symbol = L.symbol spaces
 
--- | Parse an S-Expression
-parens :: Parser a -> Parser a
-parens = between (symbol "(") (symbol ")")
+-- | The bracket used to sorround the s-expression
+data Bracket
+    = Round
+    | Square
+    | Curly
+    | Angle
+    deriving (Show, Eq)
+
+roundP :: Parser a -> Parser (Bracket, a)
+roundP = fmap (Round,) . between (symbol "(") (symbol ")")
+
+square :: Parser a -> Parser (Bracket, a)
+square = fmap (Square,) . between (symbol "[") (symbol "]")
+
+curly :: Parser a -> Parser (Bracket, a)
+curly = fmap (Curly,) . between (symbol "{") (symbol "}")
+
+angle :: Parser a -> Parser (Bracket, a)
+angle = fmap (Angle,) . between (symbol "<") (symbol ">")
+
+-- | Parse an S-Expression bracketed by 'Bracket'
+bracket :: Parser a -> Parser (Bracket, a)
+bracket inp = roundP inp <|> square inp <|> curly inp <|> angle inp
 
 {- | The list of valid token characters, note that we allow invalid tokens at
  this point
@@ -92,7 +115,7 @@ validCharacter =
 data SnailAst
     = Lexeme (SourcePos, Text)
     | TextLiteral (SourcePos, Text)
-    | SExpression (Maybe Char) [SnailAst]
+    | SExpression (Maybe Char) Bracket [SnailAst]
     deriving (Eq, Show)
 
 {- | Any 'Text' object that starts with an appropriately valid character. This
@@ -102,12 +125,15 @@ data SnailAst
  @
  (hello)
  @
+
+ TODO: Likely need to spend time here...
 -}
 lexeme :: Parser SnailAst
 lexeme = do
     sourcePosition <- getSourcePos
-    lexeme' <- some validCharacter
-    pure $ Lexeme (sourcePosition, Text.pack lexeme')
+    initial <- oneOf initialCharacter
+    rest <- some validCharacter
+    pure $ Lexeme (sourcePosition, Text.pack $ initial : rest)
 
 -- | An escaped quote to support nesting `"` inside a 'textLiteral'
 escapedQuote :: Parser Text
@@ -148,10 +174,10 @@ leaves = lexeme <|> textLiteral <|> sExpression
 
 -- | Parse an 'SExpression'
 sExpression :: Parser SnailAst
-sExpression =
-    SExpression
-        <$> optional (oneOf parenthesisStartingCharacter)
-        <*> parens (leaves `sepEndBy` spaces)
+sExpression = do
+    startingChar <- optional (oneOf parenthesisStartingCharacter)
+    (bracketType, expr) <- bracket (leaves `sepEndBy` spaces)
+    pure $ SExpression startingChar bracketType expr
 
 -- | Parse a valid snail file
 snailAst :: Parser [SnailAst]
