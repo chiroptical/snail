@@ -41,6 +41,7 @@ source-repository head
 library
   exposed-modules:
       Snail
+      Snail.Ast
       Snail.Characters
       Snail.IO
       Snail.Lexer
