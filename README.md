@@ -4,7 +4,7 @@ A no-semantics programming language for gastropods.
 
 ## Why?
 
-My colleagues and I are going to start working through [Types and Progamming
+My colleagues and I are going to start working through [Types and Programming
 Languages][tapl]. In the book you implement languages of varying feature sets.
 The book implements these languages in OCaml, however I had this Lisp parser
 essentially ready for awhile. There are a handful of "Write you a Scheme
@@ -20,7 +20,7 @@ examples. Even Haskell's parser has [this issue][haskell-parse-issue]!
 
 ## Is this really a programming language?
 
-From the ["Programming language" wikipedia page][pl-wikipedia],
+From the ["Programming language" Wikipedia page][pl-wikipedia],
 
 > A programming language is a system of notation for writing computer programs.
 
@@ -68,23 +68,40 @@ compiler.
 
 ## Getting the AST
 
-You can see some examples in `test/Snail/IOSpec.hs`, but you can put your snail
-program into some file, let's say `hello.snail`. The following Haskell will print
-the AST or print a failure,
+You have two options: `readSnailFile` or `parseSnail`.
+
+`readSnailFile` can be used like this, assuming you have put some valid snail
+into a file `./hello.snail`,
 
 ```haskell
-module Main where
-
 import Snail
 
-main :: IO ()
-main = do
+printSnail :: IO ()
+printSnail = do
   eResults <- readSnailFile "./hello.snail"
   case eResults of
     Right ast -> print ast
     Left failureString -> print failureString
 ```
 
+`parseSnail` doesn't require `IO` the only parameter is `Text`. This is useful
+for one-line programs, e.g.,
+
+```haskell
+{-# LANGUAGE OverloadedStrings #-}
+
+import Snail
+
+example :: Either String [SnailAst]
+example = parseSnail "(print false)"
+```
+
+## Example Interpreters
+
+1. The `arith` language from [Types and Programming Languages][tapl]: https://github.com/chiroptical/snail-arith/blob/main/src/Lib.hs
+2. Languages from [essentials-of-compilation][essentials-of-compilation]: https://github.com/chiroptical/essentials-of-compilation (each chapter is a module)
+
 [tapl]: https://www.cis.upenn.edu/~bcpierce/tapl
 [haskell-parse-issue]: https://twitter.com/chiroptical/status/1471568781906518018
 [pl-wikipedia]: https://en.wikipedia.org/wiki/Programming_language
+[essentials-of-compilation]: https://mitpress.mit.edu/9780262047760/essentials-of-compilation
