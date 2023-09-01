@@ -2,6 +2,9 @@ module Snail.Ast (
     -- * Constructors for AST
     Bracket (..),
     SnailAst (..),
+
+    -- * Utilities for AST
+    unwrap,
 ) where
 
 import Data.Text (Text)

@@ -1,3 +1,7 @@
+### Version 0.1.2.1
+
+* Didn't export unwrap utility
+
 ### Version 0.1.2.0
 
 * Add support for curly and square braces around S-Expressions

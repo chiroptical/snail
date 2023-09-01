@@ -5,7 +5,7 @@ cabal-version: 1.12
 -- see: https://github.com/sol/hpack
 
 name:           snail
-version:        0.1.2.0
+version:        0.1.2.1
 synopsis:       A programming language with no semantics
 description:    An s-expression parser and abstract syntax tree for a programming language with no semantics. If you wanted to write an interpreter or compiler you convert the AST into your own.
 category:       Parsing
