@@ -113,9 +113,8 @@ data SnailAst
 lexeme :: Parser SnailAst
 lexeme = do
     sourcePosition <- getSourcePos
-    initial <- oneOf initialCharacter
-    rest <- many $ oneOf subsequentCharacter
-    pure $ Lexeme (sourcePosition, Text.pack $ initial : rest)
+    txt <- some $ oneOf validCharacter
+    pure $ Lexeme (sourcePosition, Text.pack txt)
 
 -- | An escaped quote to support nesting `"` inside a 'textLiteral'
 escapedQuote :: Parser Text
@@ -143,7 +142,7 @@ textLiteral :: Parser SnailAst
 textLiteral = do
     sourcePosition <- getSourcePos
     mText <- quotes . optional $ some $ escapedQuote <|> nonQuoteCharacter
-    notFollowedBy (oneOf subsequentCharacter <|> char '\"')
+    notFollowedBy (oneOf validCharacter <|> char '\"')
     pure $ case mText of
         Nothing -> TextLiteral (sourcePosition, "")
         Just text -> TextLiteral (sourcePosition, Text.concat text)
