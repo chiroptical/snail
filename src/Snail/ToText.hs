@@ -8,7 +8,6 @@ bracket txt = \case
     Round -> "(" <> txt <> ")"
     Square -> "[" <> txt <> "]"
     Curly -> "{" <> txt <> "}"
-    Angle -> "<" <> txt <> ">"
 
 toText :: SnailAst -> Text
 toText = \case

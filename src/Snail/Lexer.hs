@@ -59,7 +59,6 @@ data Bracket
     = Round
     | Square
     | Curly
-    | Angle
     deriving (Show, Eq)
 
 roundP :: Parser a -> Parser (Bracket, a)
@@ -71,24 +70,9 @@ square = fmap (Square,) . between (symbol "[") (symbol "]")
 curly :: Parser a -> Parser (Bracket, a)
 curly = fmap (Curly,) . between (symbol "{") (symbol "}")
 
-angle :: Parser a -> Parser (Bracket, a)
-angle = fmap (Angle,) . between (symbol "<") (symbol ">")
-
 -- | Parse an S-Expression bracketed by 'Bracket'
 bracket :: Parser a -> Parser (Bracket, a)
-bracket inp = roundP inp <|> square inp <|> curly inp <|> angle inp
-
-{- | The list of valid token characters, note that we allow invalid tokens at
- this point
--}
-validCharacter :: Parser Char
-validCharacter =
-    oneOf
-        ( initialCharacter
-            <> specialInitialCharacter
-            <> digitCharacter
-            <> specialSubsequentCharacter
-        )
+bracket inp = roundP inp <|> square inp <|> curly inp
 
 {-
     A possibly empty tree of s-expressions
@@ -125,14 +109,12 @@ data SnailAst
  @
  (hello)
  @
-
- TODO: Likely need to spend time here...
 -}
 lexeme :: Parser SnailAst
 lexeme = do
     sourcePosition <- getSourcePos
     initial <- oneOf initialCharacter
-    rest <- some validCharacter
+    rest <- many $ oneOf subsequentCharacter
     pure $ Lexeme (sourcePosition, Text.pack $ initial : rest)
 
 -- | An escaped quote to support nesting `"` inside a 'textLiteral'
@@ -161,7 +143,7 @@ textLiteral :: Parser SnailAst
 textLiteral = do
     sourcePosition <- getSourcePos
     mText <- quotes . optional $ some $ escapedQuote <|> nonQuoteCharacter
-    notFollowedBy (validCharacter <|> char '\"')
+    notFollowedBy (oneOf subsequentCharacter <|> char '\"')
     pure $ case mText of
         Nothing -> TextLiteral (sourcePosition, "")
         Just text -> TextLiteral (sourcePosition, Text.concat text)
