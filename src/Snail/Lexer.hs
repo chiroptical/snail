@@ -10,9 +10,6 @@
 {-# LANGUAGE TupleSections #-}
 
 module Snail.Lexer (
-    -- * The parsers you should use
-    SnailAst (..),
-    Bracket (..),
     sExpression,
     snailAst,
 
@@ -24,6 +21,7 @@ module Snail.Lexer (
 import Data.Text (Text)
 import Data.Text qualified as Text
 import Data.Void
+import Snail.Ast
 import Snail.Characters
 import Text.Megaparsec hiding (token)
 import Text.Megaparsec.Char
@@ -54,13 +52,6 @@ spaces = L.space space1 skipLineComment skipBlockComment
 symbol :: Text -> Parser Text
 symbol = L.symbol spaces
 
--- | The bracket used to sorround the s-expression
-data Bracket
-    = Round
-    | Square
-    | Curly
-    deriving (Show, Eq)
-
 roundP :: Parser a -> Parser (Bracket, a)
 roundP = fmap (Round,) . between (symbol "(") (symbol ")")
 
@@ -73,34 +64,6 @@ curly = fmap (Curly,) . between (symbol "{") (symbol "}")
 -- | Parse an S-Expression bracketed by 'Bracket'
 bracket :: Parser a -> Parser (Bracket, a)
 bracket inp = roundP inp <|> square inp <|> curly inp
-
-{-
-    A possibly empty tree of s-expressions
-
-    Technically,
-    @
-    Token (SourcePos {..}, "hello")
-    @
-
-    isn't a valid s-expression. This is,
-
-    @
-    SExpression [Token (SourcePos {..}, "hello")]
-    @
-
-    and this is also valid,
-
-    @
-    SExpression []
-    @
-
-    The 'Data.Tree.Tree' type in containers is non-empty which isn't exactly what we are looking for
--}
-data SnailAst
-    = Lexeme (SourcePos, Text)
-    | TextLiteral (SourcePos, Text)
-    | SExpression (Maybe Char) Bracket [SnailAst]
-    deriving (Eq, Show)
 
 {- | Any 'Text' object that starts with an appropriately valid character. This
  could be an variable or function name. For example, `hello` is a valid

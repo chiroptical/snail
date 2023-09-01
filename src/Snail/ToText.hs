@@ -1,7 +1,7 @@
 module Snail.ToText (toText) where
 
 import Data.Text
-import Snail.Lexer
+import Snail.Ast
 
 bracket :: Text -> Bracket -> Text
 bracket txt = \case

@@ -3,6 +3,7 @@ module Snail.IO where
 import Data.Text (Text)
 import Data.Text qualified as Text
 import Data.Text.IO qualified as Text
+import Snail.Ast
 import Snail.Lexer
 import Text.Megaparsec
 
