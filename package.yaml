@@ -30,9 +30,11 @@ dependencies:
 - text-display >= 0.0.5 && < 0.1
 
 default-extensions:
+- FlexibleContexts
 - ImportQualifiedPost
 - LambdaCase
 - OverloadedStrings
+- TypeApplications
 
 library:
   source-dirs: src
@@ -51,3 +53,9 @@ tests:
     - hspec >= 2.10.10 && < 2.11
     - hspec-discover >= 2.10.10 && < 2.11
     - raw-strings-qq >= 1.1 && < 1.2
+
+executable:
+  main: Main.hs
+  source-dirs: example
+  dependencies:
+    - snail

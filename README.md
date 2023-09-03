@@ -101,7 +101,26 @@ example = parseSnail "(print false)"
 1. The `arith` language from [Types and Programming Languages][tapl]: https://github.com/chiroptical/snail-arith/blob/main/src/Lib.hs
 2. Languages from [essentials-of-compilation][essentials-of-compilation]: https://github.com/chiroptical/essentials-of-compilation (each chapter is a module)
 
+## Differences from S-Cargot
+
+I was recently reminded of [s-cargot][s-cargot]. From their GitHub,
+
+> S-Cargot is a library for parsing and emitting S-expressions, designed to be
+> flexible, customizable, and extensible.
+
+This is quite different from Snail. Snail is not flexible, customizable, or
+extensible. I have chosen a syntax and either you use it or you don't.
+With S-Cargot, you can build a custom S-expression parser. Snail provides one.
+
+I don't think you can re-write Snail using S-Cargot? It doesn't appear to
+support `'(x)` or `(let [x 10] x)`. Please correct me if I missed something.
+
+I tried to mimic their example
+(https://github.com/aisamanra/s-cargot/blob/master/example/example.hs) in
+./example/Main.hs.
+
 [tapl]: https://www.cis.upenn.edu/~bcpierce/tapl
 [haskell-parse-issue]: https://twitter.com/chiroptical/status/1471568781906518018
 [pl-wikipedia]: https://en.wikipedia.org/wiki/Programming_language
 [essentials-of-compilation]: https://mitpress.mit.edu/9780262047760/essentials-of-compilation
+[s-cargot]: https://github.com/aisamanra/s-cargot

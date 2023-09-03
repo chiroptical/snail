@@ -51,15 +51,40 @@ library
   hs-source-dirs:
       src
   default-extensions:
+      FlexibleContexts
       ImportQualifiedPost
       LambdaCase
       OverloadedStrings
+      TypeApplications
   build-depends:
       QuickCheck >=2.14.3 && <2.15
     , base >=4.15 && <5
     , containers >=0.6.7 && <0.7
     , megaparsec >=9.3.1 && <9.4
     , mtl >=2.2.2 && <2.3
+    , text >=2.0.2 && <2.1
+    , text-display >=0.0.5 && <0.1
+  default-language: Haskell2010
+
+executable snail
+  main-is: Main.hs
+  other-modules:
+      Paths_snail
+  hs-source-dirs:
+      example
+  default-extensions:
+      FlexibleContexts
+      ImportQualifiedPost
+      LambdaCase
+      OverloadedStrings
+      TypeApplications
+  build-depends:
+      QuickCheck >=2.14.3 && <2.15
+    , base >=4.15 && <5
+    , containers >=0.6.7 && <0.7
+    , megaparsec >=9.3.1 && <9.4
+    , mtl >=2.2.2 && <2.3
+    , snail
     , text >=2.0.2 && <2.1
     , text-display >=0.0.5 && <0.1
   default-language: Haskell2010
@@ -76,9 +101,11 @@ test-suite snail-test
   hs-source-dirs:
       test
   default-extensions:
+      FlexibleContexts
       ImportQualifiedPost
       LambdaCase
       OverloadedStrings
+      TypeApplications
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       HUnit >=1.6.2 && <1.7
