@@ -119,8 +119,19 @@ I tried to mimic their example
 (https://github.com/aisamanra/s-cargot/blob/master/example/example.hs) in
 ./example/Main.hs.
 
+## Resources for implementing interpreters and compilers
+
+These are resources I am personally interested in exploring, there are **many** others
+
+- [Types and Programming Languages][tapl]
+- [Essentials of Compilation][essentials-of-compilation]
+- [Compiler Design][cs4410]
+- [Compiler Construction][cse131]
+
 [tapl]: https://www.cis.upenn.edu/~bcpierce/tapl
 [haskell-parse-issue]: https://twitter.com/chiroptical/status/1471568781906518018
 [pl-wikipedia]: https://en.wikipedia.org/wiki/Programming_language
 [essentials-of-compilation]: https://mitpress.mit.edu/9780262047760/essentials-of-compilation
 [s-cargot]: https://github.com/aisamanra/s-cargot
+[cs4410]: https://course.ccs.neu.edu/cs4410sp21/
+[cse131]: https://ucsd-cse131-f19.github.io/
