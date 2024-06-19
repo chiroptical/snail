@@ -114,7 +114,7 @@ textLiteral = do
  recursively separated by 'spaces' in 'sExpression'.
 -}
 leaves :: Parser SnailAst
-leaves = lexeme <|> textLiteral <|> sExpression
+leaves = try sExpression <|> lexeme <|> textLiteral
 
 -- | Parse an 'SExpression'
 sExpression :: Parser SnailAst

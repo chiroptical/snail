@@ -160,3 +160,15 @@ spec = do
 
         it "fails to parse nested mismatched brackets" $ do
             parseMaybe snailAst "([)]" `shouldSatisfy` isNothing
+
+        it "associates inner '#' with the s-expression" $ do
+            let Just [result] = parseMaybe snailAst "(different-char/2 #(inside))"
+            foldLexemes result `shouldBe` ["different-char/2", "inside"]
+
+        it "fails with two leading characters" $ do
+            parseMaybe snailAst "@,(foo)" `shouldSatisfy` isNothing
+
+        -- NOTE: this may or may not be the desired behavior
+        it "parses two leading characters as valid lexeme" $ do
+            let Just [result] = parseMaybe snailAst "(@,(foo ...))"
+            foldLexemes result `shouldBe` ["@,", "foo", "..."]
