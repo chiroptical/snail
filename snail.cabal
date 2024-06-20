@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.35.2.
+-- This file has been generated from package.yaml by hpack version 0.36.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -60,8 +60,8 @@ library
       QuickCheck >=2.14.3 && <2.15
     , base >=4.15 && <5
     , containers >=0.6.7 && <0.7
-    , megaparsec >=9.3.1 && <9.4
-    , mtl >=2.2.2 && <2.3
+    , megaparsec >=9.5.0 && <9.6
+    , mtl >=2.3.1 && <2.4
     , text >=2.0.2 && <2.1
     , text-display >=0.0.5 && <0.1
   default-language: Haskell2010
@@ -82,8 +82,8 @@ executable snail
       QuickCheck >=2.14.3 && <2.15
     , base >=4.15 && <5
     , containers >=0.6.7 && <0.7
-    , megaparsec >=9.3.1 && <9.4
-    , mtl >=2.2.2 && <2.3
+    , megaparsec >=9.5.0 && <9.6
+    , mtl >=2.3.1 && <2.4
     , snail
     , text >=2.0.2 && <2.1
     , text-display >=0.0.5 && <0.1
@@ -112,10 +112,10 @@ test-suite snail-test
     , QuickCheck >=2.14.3 && <2.15
     , base >=4.15 && <5
     , containers >=0.6.7 && <0.7
-    , hspec >=2.10.10 && <2.11
-    , hspec-discover >=2.10.10 && <2.11
-    , megaparsec >=9.3.1 && <9.4
-    , mtl >=2.2.2 && <2.3
+    , hspec >=2.11.8 && <2.12
+    , hspec-discover >=2.11.8 && <2.12
+    , megaparsec >=9.5.0 && <9.6
+    , mtl >=2.3.1 && <2.4
     , raw-strings-qq ==1.1.*
     , snail
     , text >=2.0.2 && <2.1
