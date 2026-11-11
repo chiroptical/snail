@@ -10,10 +10,11 @@ test: hpack
 	cabal test --ghc-options='${OPTIONS}'
 
 format:
-	alejandra --quiet .
+	treefmt --tree-root-file flake.nix --walk filesystem
 	find src/ test/ -name "*.hs" -exec fourmolu -i -o '-XTypeApplications' -o '-XImportQualifiedPost' {} +
 
 format-check:
+	treefmt --ci --tree-root-file flake.nix --walk filesystem
 	find src/ test/ -name "*.hs" -exec fourmolu -m check -o '-XTypeApplications' -o '-XImportQualifiedPost' {} +
 
 ghcid: hpack
