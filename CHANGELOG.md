@@ -1,3 +1,7 @@
+### Version 0.1.2.2
+
+* Update dependencies upper bounds
+
 ### Version 0.1.2.1
 
 * Didn't export unwrap utility
