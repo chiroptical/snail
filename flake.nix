@@ -1,76 +1,69 @@
 {
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    haskell-flake.url = "github:srid/haskell-flake";
-  };
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    flake-parts,
-    ...
-  }:
-    flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = nixpkgs.lib.systems.flakeExposed;
-      imports = [inputs.haskell-flake.flakeModule];
+  description = "An S-expression parser and abstract syntax tree";
 
-      perSystem = {
-        self',
-        pkgs,
-        ...
-      }: {
-        # Typically, you just want a single project named "default". But
-        # multiple projects are also possible, each using different GHC version.
-        haskellProjects.default = {
-          # The base package set representing a specific GHC version.
-          # By default, this is pkgs.haskellPackages.
-          # You may also create your own. See https://zero-to-flakes.com/haskell-flake/package-set
-          # basePackages = pkgs.haskellPackages;
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-          # Extra package information. See https://zero-to-flakes.com/haskell-flake/dependency
-          #
-          # Note that local packages are automatically included in `packages`
-          # (defined by `defaults.packages` option).
-          #
-          # packages = {
-          #   aeson.source = "1.5.0.0"; # Hackage version override
-          #   shower.source = inputs.shower;
-          # };
-          # settings = {
-          #   aeson = {
-          #     check = false;
-          #   };
-          #   relude = {
-          #     haddock = false;
-          #     broken = false;
-          #   };
-          # };
-          settings = {
-            text-display = {
-              broken = false;
-            };
-          };
-
-          devShell = {
-            # Enabled by default
-            #enable = true;
-
-            # Programs you want to make available in the shell.
-            # Default programs can be disabled by setting to 'null'
-            tools = hp: {
-              fourmolu = hp.fourmolu;
-              hpack = hp.hpack;
-              hlint = hp.hlint;
-              ghcid = hp.ghcid;
-              alejandra = pkgs.alejandra;
-            };
-
-            hlsCheck.enable = true;
-          };
+  outputs =
+    { self, nixpkgs }:
+    let
+      supportedSystems = [
+        "aarch64-darwin"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "x86_64-linux"
+      ];
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+      nixFormatter =
+        pkgs:
+        pkgs.nixfmt-tree.override {
+          settings.tree-root-file = "flake.nix";
         };
+    in
+    {
+      devShells = forAllSystems (system: {
+        default = nixpkgs.legacyPackages.${system}.callPackage ./shell.nix {
+          nixFormatter = self.formatter.${system};
+        };
+      });
 
-        # haskell-flake doesn't set the default package, but you can do it here.
-        packages.default = self'.packages.snail;
-      };
+      formatter = forAllSystems (system: nixFormatter nixpkgs.legacyPackages.${system});
+
+      packages = forAllSystems (
+        system:
+        let
+          snail = import ./snail.nix { pkgs = nixpkgs.legacyPackages.${system}; };
+        in
+        {
+          inherit snail;
+          default = snail;
+        }
+      );
+
+      checks = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          test = pkgs.haskell.lib.doCheck self.packages.${system}.snail;
+          format =
+            pkgs.runCommand "snail-format"
+              {
+                nativeBuildInputs = [
+                  pkgs.findutils
+                  pkgs.gnumake
+                  pkgs.haskellPackages.fourmolu
+                  self.formatter.${system}
+                ];
+              }
+              ''
+                cp -R ${self} source
+                chmod -R u+w source
+                cd source
+                make format-check
+                touch "$out"
+              '';
+        }
+      );
     };
 }
