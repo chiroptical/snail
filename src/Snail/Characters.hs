@@ -1,8 +1,16 @@
-module Snail.Characters (validCharacter, parenthesisStartingCharacter) where
+module Snail.Characters (validCharacter, isValidCharacter, parenthesisStartingCharacter) where
+
+import Data.Set qualified as Set
 
 -- | The valid character set of Snail
 validCharacter :: String
 validCharacter = ['a' .. 'z'] <> ['A' .. 'Z'] <> digitCharacter <> specialInitialCharacter <> unicodeCharacter
+
+validCharacterSet :: Set.Set Char
+validCharacterSet = Set.fromList validCharacter
+
+isValidCharacter :: Char -> Bool
+isValidCharacter c = Set.member c validCharacterSet
 
 -- | Characters allowed in numbers
 digitCharacter :: String
