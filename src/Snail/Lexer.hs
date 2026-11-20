@@ -18,6 +18,7 @@ module Snail.Lexer (
     textLiteral,
 ) where
 
+import Data.Char (isSpace)
 import Data.Text (Text)
 import Data.Text qualified as Text
 import Data.Void
@@ -46,7 +47,13 @@ skipBlockComment = L.skipBlockCommentNested "{-" "-}"
  'skipBlockComment'
 -}
 spaces :: Parser ()
-spaces = L.space space1 skipLineComment skipBlockComment
+spaces = do
+    _ <- takeWhileP (Just "white space") isSpace
+    input <- getInput
+    case Text.take 2 input of
+        "--" -> skipLineComment *> spaces
+        "{-" -> skipBlockComment *> spaces
+        _ -> pure ()
 
 -- | Parse a 'Text' verbatim
 symbol :: Text -> Parser Text
