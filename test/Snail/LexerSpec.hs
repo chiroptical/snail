@@ -7,7 +7,7 @@ import Data.Text (Text, unpack)
 import Snail
 import Test.HUnit (assertBool)
 import Test.Hspec
-import Text.Megaparsec (parseMaybe, parseTest)
+import Text.Megaparsec (getInput, parse, parseMaybe, parseTest)
 import Text.RawString.QQ
 
 foldLexemes :: SnailAst -> [Text]
@@ -78,6 +78,10 @@ spec = do
             [r|"    "|] `textLiteralShouldBe` ["    "]
 
     describe "parse sExpression" $ do
+        it "consumes a trailing comment and leaves the next token" $
+            parse (sExpression *> getInput) "" "(x) -- comment\nrest"
+                `shouldBe` Right "rest"
+
         it "attaches comma-at to the immediately following list" $
             case parseMaybe sExpression "(list ,@(xs))" of
                 Just (SExpression Nothing Round [Lexeme (_, "list"), SExpression (Just ",@") Round [Lexeme (_, "xs")]]) -> pure ()
