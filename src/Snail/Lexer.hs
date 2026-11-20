@@ -8,7 +8,6 @@
   (text literals) for convenience.
 -}
 {-# LANGUAGE BangPatterns #-}
-{-# LANGUAGE TupleSections #-}
 
 module Snail.Lexer (
     sExpression,
@@ -53,18 +52,8 @@ spaces = L.space space1 skipLineComment skipBlockComment
 symbol :: Text -> Parser Text
 symbol = L.symbol spaces
 
-roundP :: Parser a -> Parser (Bracket, a)
-roundP = fmap (Round,) . between (symbol "(") (symbol ")")
-
-square :: Parser a -> Parser (Bracket, a)
-square = fmap (Square,) . between (symbol "[") (symbol "]")
-
-curly :: Parser a -> Parser (Bracket, a)
-curly = fmap (Curly,) . between (symbol "{") (symbol "}")
-
--- | Parse an S-Expression bracketed by 'Bracket'
-bracket :: Parser a -> Parser (Bracket, a)
-bracket inp = roundP inp <|> square inp <|> curly inp
+openingBracket :: Parser Bracket
+openingBracket = (Round <$ symbol "(") <|> (Square <$ symbol "[") <|> (Curly <$ symbol "{")
 
 {- | Any 'Text' object that starts with an appropriately valid character. This
  could be an variable or function name. For example, `hello` is a valid
@@ -122,7 +111,22 @@ textLiteral = do
  recursively separated by 'spaces' in 'sExpression'.
 -}
 leaves :: Parser SnailAst
-leaves = try sExpression <|> lexeme <|> textLiteral
+leaves = (openingBracket >>= listStartingWith Nothing) <|> (lookAhead anySingle >>= leafStartingWith)
+
+leafStartingWith :: Char -> Parser SnailAst
+leafStartingWith next
+    | next == '"' = textLiteral
+    | next `elem` parenthesisStartingCharacter = try sExpression <|> lexeme
+    | otherwise = lexeme
+
+listStartingWith :: Maybe Text -> Bracket -> Parser SnailAst
+listStartingWith prefix bracket = do
+    expr <- leaves `sepEndBy` spaces
+    _ <- symbol $ case bracket of
+        Round -> ")"
+        Square -> "]"
+        Curly -> "}"
+    pure $ SExpression prefix bracket expr
 
 listPrefix :: Parser Text
 listPrefix = Text.copy <$> takeWhile1P (Just "list prefix") (`elem` parenthesisStartingCharacter)
@@ -131,8 +135,8 @@ listPrefix = Text.copy <$> takeWhile1P (Just "list prefix") (`elem` parenthesisS
 sExpression :: Parser SnailAst
 sExpression = do
     prefix <- optional listPrefix
-    (bracketType, expr) <- bracket (leaves `sepEndBy` spaces)
-    pure $ SExpression prefix bracketType expr
+    bracket <- openingBracket
+    listStartingWith prefix bracket
 
 -- | Parse a valid snail file
 snailAst :: Parser [SnailAst]
