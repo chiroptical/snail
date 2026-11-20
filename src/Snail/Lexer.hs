@@ -117,12 +117,15 @@ textLiteral = do
 leaves :: Parser SnailAst
 leaves = try sExpression <|> lexeme <|> textLiteral
 
+listPrefix :: Parser Text
+listPrefix = Text.copy <$> takeWhile1P (Just "list prefix") (`elem` parenthesisStartingCharacter)
+
 -- | Parse an 'SExpression'
 sExpression :: Parser SnailAst
 sExpression = do
-    startingChar <- optional (oneOf parenthesisStartingCharacter)
+    prefix <- optional listPrefix
     (bracketType, expr) <- bracket (leaves `sepEndBy` spaces)
-    pure $ SExpression startingChar bracketType expr
+    pure $ SExpression prefix bracketType expr
 
 -- | Parse a valid snail file
 snailAst :: Parser [SnailAst]

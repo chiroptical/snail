@@ -42,7 +42,7 @@ data Bracket
 data SnailAst
     = Lexeme (SourcePos, Text)
     | TextLiteral (SourcePos, Text)
-    | SExpression (Maybe Char) Bracket [SnailAst]
+    | SExpression (Maybe Text) Bracket [SnailAst]
     deriving (Eq, Show)
 
 {- | Unwrap nested s-expressions, this is very useful when you are converting

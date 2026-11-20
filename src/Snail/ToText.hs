@@ -16,6 +16,6 @@ toText = \case
     SExpression Nothing bracketKind exprs ->
         let txt = Data.Text.unwords $ toText <$> exprs
          in bracket txt bracketKind
-    SExpression (Just c) bracketKind exprs ->
+    SExpression (Just prefix) bracketKind exprs ->
         let txt = Data.Text.unwords $ toText <$> exprs
-         in singleton c <> bracket txt bracketKind
+         in prefix <> bracket txt bracketKind
