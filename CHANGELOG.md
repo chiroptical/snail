@@ -1,3 +1,7 @@
+### Unreleased
+
+* Fix string termination after escaped backslashes while preserving raw escapes.
+
 ### Version 0.1.2.2
 
 * Update dependencies upper bounds

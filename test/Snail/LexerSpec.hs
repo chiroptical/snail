@@ -49,6 +49,15 @@ spec = do
             mSExpr `shouldBe` Just " "
 
     describe "parse text literals" $ do
+        it "preserves escaped backslashes and quotes without swallowing the next token" $ do
+            [r|("\\" next "\\\"" "\n")|] `sExpressionShouldBe` [[r|\\|], "next", [r|\\\"|], [r|\n|]]
+
+        it "rejects a dangling escape prefix inside an incomplete string literal" $ do
+            parseMaybe textLiteral [r|"abc\|] `shouldBe` Nothing
+
+        it "rejects an escaped double quote inside an incomplete string literal" $ do
+            parseMaybe textLiteral [r|"abc\"|] `shouldBe` Nothing
+
         it "successfully parses a basic text literal" $ do
             [r|"hello \"world"|] `textLiteralShouldBe` [[r|hello \"world|]]
 

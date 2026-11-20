@@ -79,9 +79,12 @@ lexeme = do
     txt <- some $ oneOf validCharacter
     pure $ Lexeme (sourcePosition, Text.pack txt)
 
--- | An escaped quote to support nesting `"` inside a 'textLiteral'
-escapedQuote :: Parser Text
-escapedQuote = string "\\\""
+-- | Use `\` as an escape character. Capture the next character verbatim.
+escapedCharacter :: Parser Text
+escapedCharacter = do
+    slash <- char '\\'
+    character <- anySingle
+    pure $ Text.pack [slash, character]
 
 -- | Matches any non-quote character
 nonQuoteCharacter :: Parser Text
@@ -104,11 +107,9 @@ quotes = between quote quote
 textLiteral :: Parser SnailAst
 textLiteral = do
     sourcePosition <- getSourcePos
-    mText <- quotes . optional $ some $ escapedQuote <|> nonQuoteCharacter
+    text <- quotes $ many $ escapedCharacter <|> nonQuoteCharacter
     notFollowedBy (oneOf validCharacter <|> char '\"')
-    pure $ case mText of
-        Nothing -> TextLiteral (sourcePosition, "")
-        Just text -> TextLiteral (sourcePosition, Text.concat text)
+    pure $ TextLiteral (sourcePosition, Text.concat text)
 
 {- | Parse one of the possible structures in 'SnailAst'. These are parsed
  recursively separated by 'spaces' in 'sExpression'.
