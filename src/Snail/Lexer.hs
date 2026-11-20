@@ -7,6 +7,7 @@
   Here, we implement a structurally aware lexer that supports one token type
   (text literals) for convenience.
 -}
+{-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE TupleSections #-}
 
 module Snail.Lexer (
@@ -86,6 +87,9 @@ escapedCharacter = do
     character <- anySingle
     pure $ Text.pack [slash, character]
 
+unescapedChunk :: Parser Text
+unescapedChunk = takeWhile1P Nothing (\c -> c /= '"' && c /= '\\')
+
 -- | Matches any non-quote character
 nonQuoteCharacter :: Parser Text
 nonQuoteCharacter = do
@@ -107,9 +111,12 @@ quotes = between quote quote
 textLiteral :: Parser SnailAst
 textLiteral = do
     sourcePosition <- getSourcePos
-    text <- quotes $ many $ escapedCharacter <|> nonQuoteCharacter
+    chunks <- quotes $ many (escapedCharacter <|> unescapedChunk)
     notFollowedBy (satisfy isValidCharacter <|> char '\"')
-    pure $ TextLiteral (sourcePosition, Text.concat text)
+    let !text = case chunks of
+            [chunk] -> Text.copy chunk
+            _ -> Text.concat chunks
+    pure $ TextLiteral (sourcePosition, text)
 
 {- | Parse one of the possible structures in 'SnailAst'. These are parsed
  recursively separated by 'spaces' in 'sExpression'.
