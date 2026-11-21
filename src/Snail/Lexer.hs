@@ -76,8 +76,8 @@ bracket inp = roundP inp <|> square inp <|> curly inp
 lexeme :: Parser SnailAst
 lexeme = do
     sourcePosition <- getSourcePos
-    txt <- some $ satisfy isValidCharacter
-    pure $ Lexeme (sourcePosition, Text.pack txt)
+    txt <- takeWhile1P (Just "identifier character") isValidCharacter
+    pure $ Lexeme (sourcePosition, Text.copy txt)
 
 -- | Use `\` as an escape character. Capture the next character verbatim.
 escapedCharacter :: Parser Text
