@@ -1,0 +1,18 @@
+name: snail-example
+version: 0.1.0.0
+license: MIT
+
+executables:
+  snail:
+    main: Main.hs
+    default-extensions:
+    - FlexibleContexts
+    - ImportQualifiedPost
+    - LambdaCase
+    - OverloadedStrings
+    - TypeApplications
+    dependencies:
+    - base >= 4.15 && < 5
+    - mtl >= 2.3.1 && < 2.4
+    - snail
+    - text

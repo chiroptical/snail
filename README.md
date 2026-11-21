@@ -117,7 +117,8 @@ support `'(x)` or `(let [x 10] x)`. Please correct me if I missed something.
 
 I tried to mimic their example
 (https://github.com/aisamanra/s-cargot/blob/master/example/example.hs) in
-./example/Main.hs.
+[example/Main.hs](https://github.com/chiroptical/snail/blob/main/example/Main.hs).
+Run the example from the repository root with `nix run .`.
 
 ## Resources for implementing interpreters and compilers
 

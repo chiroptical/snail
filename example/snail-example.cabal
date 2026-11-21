@@ -1,0 +1,27 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.38.3.
+--
+-- see: https://github.com/sol/hpack
+
+name:           snail-example
+version:        0.1.0.0
+license:        MIT
+build-type:     Simple
+
+executable snail
+  main-is: Main.hs
+  other-modules:
+      Paths_snail_example
+  default-extensions:
+      FlexibleContexts
+      ImportQualifiedPost
+      LambdaCase
+      OverloadedStrings
+      TypeApplications
+  build-depends:
+      base >=4.15 && <5
+    , mtl >=2.3.1 && <2.4
+    , snail
+    , text
+  default-language: Haskell2010

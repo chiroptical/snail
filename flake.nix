@@ -39,6 +39,22 @@
         }
       );
 
+      apps = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          haskell = pkgs.callPackage ./haskell.nix { };
+          example = {
+            type = "app";
+            program = "${haskell.snail-example}/bin/snail";
+          };
+        in
+        {
+          default = example;
+          snail = example;
+        }
+      );
+
       checks = forAllSystems (
         system:
         let

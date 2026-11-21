@@ -20,7 +20,6 @@ build-type:     Simple
 extra-source-files:
     README.md
     CHANGELOG.md
-data-files:
     snail-files/basic.snail
     snail-files/fail-comment.snail
     snail-files/fail-empty.snail
@@ -29,7 +28,6 @@ data-files:
     snail-files/fail-quotes-3.snail
     snail-files/fail-quotes.snail
     snail-files/fail.snail
-    snail-files/nil.snail
     test/files/fennel-reference.fnl
     test/files/learnxyz.cl
     test/files/r5rs_pitfalls.scm
@@ -61,30 +59,6 @@ library
     , base >=4.15 && <5
     , containers >=0.6.7 && <0.8
     , megaparsec >=9.5.0 && <9.9
-    , mtl >=2.3.1 && <2.4
-    , text >=2.0.2 && <2.2
-    , text-display >=0.0.5 && <0.1 || >=1.0 && <1.1
-  default-language: Haskell2010
-
-executable snail
-  main-is: Main.hs
-  other-modules:
-      Paths_snail
-  hs-source-dirs:
-      example
-  default-extensions:
-      FlexibleContexts
-      ImportQualifiedPost
-      LambdaCase
-      OverloadedStrings
-      TypeApplications
-  build-depends:
-      QuickCheck >=2.14.3 && <2.20
-    , base >=4.15 && <5
-    , containers >=0.6.7 && <0.8
-    , megaparsec >=9.5.0 && <9.9
-    , mtl >=2.3.1 && <2.4
-    , snail
     , text >=2.0.2 && <2.2
     , text-display >=0.0.5 && <0.1 || >=1.0 && <1.1
   default-language: Haskell2010
@@ -115,7 +89,6 @@ test-suite snail-test
     , hspec >=2.11.8 && <2.12
     , hspec-discover >=2.11.8 && <2.12
     , megaparsec >=9.5.0 && <9.9
-    , mtl >=2.3.1 && <2.4
     , raw-strings-qq ==1.1.*
     , snail
     , text >=2.0.2 && <2.2
