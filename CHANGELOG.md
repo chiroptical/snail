@@ -2,6 +2,7 @@
 
 * Fix string termination after escaped backslashes while preserving raw escapes.
 * Add an explicit Unicode identifier allowlist.
+* Expand `SExpression` prefix support to multiple characters, e.g. `,@(...)`.
 
 ### Version 0.1.2.2
 

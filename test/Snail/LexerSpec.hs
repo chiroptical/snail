@@ -3,7 +3,7 @@
 module Snail.LexerSpec (spec) where
 
 import Data.Maybe (isJust, isNothing)
-import Data.Text
+import Data.Text (Text, unpack)
 import Snail
 import Test.HUnit (assertBool)
 import Test.Hspec
@@ -78,6 +78,35 @@ spec = do
             [r|"    "|] `textLiteralShouldBe` ["    "]
 
     describe "parse sExpression" $ do
+        it "attaches comma-at to the immediately following list" $
+            case parseMaybe sExpression "(list ,@(xs))" of
+                Just (SExpression Nothing Round [Lexeme (_, "list"), SExpression (Just ",@") Round [Lexeme (_, "xs")]]) -> pure ()
+                result -> expectationFailure $ show result
+
+        it "round-trips a comma-at-prefixed list" $
+            case parseMaybe sExpression ",@(xs)" of
+                Just ast@(SExpression (Just ",@") Round [Lexeme (_, "xs")]) ->
+                    toText ast `shouldBe` ",@(xs)"
+                result -> expectationFailure $ "Expected a ,@-prefixed list, got " <> show result
+
+        it "preserves a trailing apostrophe in an identifier" $
+            "(foldl')" `sExpressionShouldBe` ["foldl'"]
+
+        it "preserves an at sign inside an identifier" $
+            "(user@host)" `sExpressionShouldBe` ["user@host"]
+
+        it "preserves a comma inside an identifier" $
+            "(a,b)" `sExpressionShouldBe` ["a,b"]
+
+        it "preserves comma-at at the start of an identifier" $
+            "(,@x)" `sExpressionShouldBe` [",@x"]
+
+        it "keeps detached comma-at as a lexeme" $
+            "(,@ (xs))" `sExpressionShouldBe` [",@", "xs"]
+
+        it "rejects a bare top-level comma-at identifier" $
+            parseMaybe sExpression ",@x" `shouldBe` Nothing
+
         it "successfully lex a basic list" $ do
             "(a b c)" `sExpressionShouldBe` ["a", "b", "c"]
 
@@ -174,10 +203,23 @@ spec = do
             let Just [result] = parseMaybe snailAst "(different-char/2 #(inside))"
             foldLexemes result `shouldBe` ["different-char/2", "inside"]
 
-        it "fails with two leading characters" $ do
-            parseMaybe snailAst "@,(foo)" `shouldSatisfy` isNothing
+        it "keeps a run of prefix characters on the inner list" $
+            case parseMaybe snailAst "(@,(xs))" of
+                Just [SExpression Nothing Round [SExpression (Just "@,") Round [Lexeme (_, "xs")]]] -> pure ()
+                result -> expectationFailure $ show result
 
-        -- NOTE: this may or may not be the desired behavior
-        it "parses two leading characters as valid lexeme" $ do
-            let Just [result] = parseMaybe snailAst "(@,(foo ...))"
-            foldLexemes result `shouldBe` ["@,", "foo", "..."]
+        it "round-trips a list whose only child has the at-comma prefix" $
+            case parseMaybe sExpression "(@,(xs))" of
+                Just ast@(SExpression Nothing Round [SExpression (Just "@,") Round [Lexeme (_, "xs")]]) ->
+                    toText ast `shouldBe` "(@,(xs))"
+                result -> expectationFailure $ "Expected an @,-prefixed inner list, got " <> show result
+
+        it "leaves a space-separated prefix token as a sibling of the list" $
+            case parseMaybe snailAst "(@, (xs))" of
+                Just [SExpression Nothing Round [Lexeme (_, "@,"), SExpression Nothing Round [Lexeme (_, "xs")]]] -> pure ()
+                result -> expectationFailure $ show result
+
+        it "preserves mixed and repeated prefix characters on a top-level list" $
+            case parseMaybe snailAst "`''#@,[xs]" of
+                Just [SExpression (Just "`''#@,") Square [Lexeme (_, "xs")]] -> pure ()
+                result -> expectationFailure $ show result
