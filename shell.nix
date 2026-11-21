@@ -3,7 +3,10 @@ let
   haskell = pkgs.callPackage ./haskell.nix { };
 in
 haskell.shellFor {
-  packages = p: [ p.snail ];
+  packages = p: [
+    p.snail
+    p.snail-example
+  ];
   nativeBuildInputs = [
     haskell.cabal-install
     haskell.fourmolu
