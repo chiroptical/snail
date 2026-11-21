@@ -76,7 +76,7 @@ bracket inp = roundP inp <|> square inp <|> curly inp
 lexeme :: Parser SnailAst
 lexeme = do
     sourcePosition <- getSourcePos
-    txt <- some $ oneOf validCharacter
+    txt <- some $ satisfy isValidCharacter
     pure $ Lexeme (sourcePosition, Text.pack txt)
 
 -- | Use `\` as an escape character. Capture the next character verbatim.
@@ -108,7 +108,7 @@ textLiteral :: Parser SnailAst
 textLiteral = do
     sourcePosition <- getSourcePos
     text <- quotes $ many $ escapedCharacter <|> nonQuoteCharacter
-    notFollowedBy (oneOf validCharacter <|> char '\"')
+    notFollowedBy (satisfy isValidCharacter <|> char '\"')
     pure $ TextLiteral (sourcePosition, Text.concat text)
 
 {- | Parse one of the possible structures in 'SnailAst'. These are parsed
