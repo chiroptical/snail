@@ -5,6 +5,7 @@ in
 haskell.shellFor {
   packages = p: [
     p.snail
+    p.snail-bench
     p.snail-example
   ];
   nativeBuildInputs = [

@@ -48,10 +48,16 @@
             type = "app";
             program = "${haskell.snail-example}/bin/snail";
           };
+          optimize = pkg: pkgs.haskell.lib.appendConfigureFlag pkg "--enable-optimization=2";
+          benchmark = optimize (haskell.snail-bench.override { snail = optimize haskell.snail; });
         in
         {
           default = example;
           snail = example;
+          benchmark = {
+            type = "app";
+            program = "${benchmark}/bin/snail-bench";
+          };
         }
       );
 
