@@ -117,23 +117,35 @@ textLiteral = do
 {- | Parse one of the possible structures in 'SnailAst'. These are parsed
  recursively separated by 'spaces' in 'sExpression'.
 -}
-leaves :: Parser SnailAst
-leaves = (openingBracket >>= listStartingWith Nothing) <|> (lookAhead anySingle >>= leafStartingWith)
-
 leafStartingWith :: Char -> Parser SnailAst
 leafStartingWith next
     | next == '"' = textLiteral
     | next `elem` parenthesisStartingCharacter = try sExpression <|> lexeme
-    | otherwise = lexeme
+    | otherwise = (openingBracket >>= listStartingWith Nothing) <|> lexeme
 
 listStartingWith :: Maybe Text -> Bracket -> Parser SnailAst
 listStartingWith prefix bracket = do
-    expr <- leaves `sepEndBy` spaces
-    _ <- symbol $ case bracket of
-        Round -> ")"
-        Square -> "]"
-        Curly -> "}"
-    pure $ SExpression prefix bracket expr
+    let closing = case bracket of
+            Round -> ')'
+            Square -> ']'
+            Curly -> '}'
+    SExpression prefix bracket <$> listChildren closing
+
+listChildren :: Char -> Parser [SnailAst]
+listChildren closing = do
+    input <- getInput
+    case Text.uncons input of
+        Nothing -> fail $ "Unexpected end of input. Expected " <> show closing
+        Just (next, _)
+            | next == closing -> do
+                _ <- char closing
+                spaces
+                pure []
+            | otherwise -> do
+                child <- leafStartingWith next
+                spaces
+                rest <- listChildren closing
+                pure (child : rest)
 
 listPrefix :: Parser Text
 listPrefix = Text.copy <$> takeWhile1P (Just "list prefix") (`elem` parenthesisStartingCharacter)
