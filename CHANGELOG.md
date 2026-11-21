@@ -3,6 +3,7 @@
 * Fix string termination after escaped backslashes while preserving raw escapes.
 * Add an explicit Unicode identifier allowlist.
 * Expand `SExpression` prefix support to multiple characters, e.g. `,@(...)`.
+* Improve performance of lexer.
 
 ### Version 0.1.2.2
 
