@@ -1,0 +1,20 @@
+name: snail-bench
+version: 0.1.0.0
+license: MIT
+
+data-files:
+- fixtures/*
+
+executable:
+  main: Main.hs
+  source-dirs: .
+  default-extensions:
+  - ImportQualifiedPost
+  - OverloadedStrings
+  dependencies:
+  - base >= 4.15 && < 5
+  - criterion >= 1.6 && < 1.7
+  - deepseq
+  - megaparsec
+  - snail
+  - text
