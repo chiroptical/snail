@@ -1,4 +1,4 @@
-### Unreleased
+### Version 1.0.0
 
 * Fix string termination after escaped backslashes while preserving raw escapes.
 * Add an explicit Unicode identifier allowlist.
